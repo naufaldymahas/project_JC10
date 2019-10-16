@@ -1,0 +1,86 @@
+.img-c {
+    position: relative;
+    height: 0;
+    width: 100%;
+    overflow: hidden;
+    padding-top: 75.09%
+}
+
+.img-c > img {
+    display:block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+.card-type-2 {
+    border-radius: 3px;
+    background-color: #fff;
+    height: 340px;
+    border: 1px solid #d8d8d8;
+    width: 100%;
+    min-width: 150px;
+    margin-bottom:3%;
+}
+
+.card-body-type-1 {
+    margin: 8px;
+}
+
+.col-2-type-2 {
+    flex: 0 0 20%;
+    max-width: 20%;
+    padding-right: 8px
+}
+
+.input-cart {
+    border: 1px solid #d8d8d8;
+    width: 96px;
+    padding: 9px 40px;
+    display: inline-block;
+}
+
+.btn-type-1 {
+    background-color: white;
+    border: 1px solid #d8d8d8;
+    padding: 9px 9.8%
+}
+
+.btn-minus {
+    border-right: none;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px
+}
+
+.btn-minus:hover {
+    color: red;
+}
+
+.btn-plus {
+    border-left: none;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.btn-plus:hover {
+    color: green
+}
+
+.container-card-type1 {
+    display: flex;
+    margin-right: -15px;
+    margin-left: -15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.card-title-type2 {
+    float: right;
+    margin-top: 10px
+}
+

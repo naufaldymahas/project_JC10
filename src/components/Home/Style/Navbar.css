@@ -1,0 +1,125 @@
+/* TOP NAVBAR */
+
+.navbars {
+    display: inline;
+}
+
+.navbar-items {
+    padding: 15px;
+    border-bottom: 1px solid #cacaca;
+    line-height: 10%;
+    font-size: 17px;
+}
+
+.items {
+    line-height: 1.6;
+    float: right;
+    margin-right: 30px;
+}
+
+.basket {
+    background-color: white;
+    position: fixed;
+    right: 0;
+    top: 6rem;
+    border: 1px solid #cacaca;
+    padding: 10px 15px;
+    border-right: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    color: #cacaca;
+    z-index: 1;
+}
+
+.basket:hover {
+    color: green;
+    background-color: #fafafa;
+}
+
+.cart-badge {
+    z-index: 2;
+    position: fixed;
+    right: 10px;
+    top: 6.3rem;
+    border-radius: 50%;
+    width:18px;
+    height:18px;
+    background: red;
+    color: white;
+    font-size: 11px;
+    text-align: center;
+}
+
+.cart-number {
+    font-size: 10px;
+    padding: 0px !important;
+}
+
+.items a {
+    padding: 8px 12px;
+    margin: 10px;
+}
+
+.masuk {
+    color: black;
+    opacity: 0.6;
+    transition: 0.3s;
+    background-color: white;
+    border: none
+}
+
+.masuk:hover {
+    opacity: 1;
+    color: black;
+    text-decoration: none;
+}
+
+.daftar {
+    color: green;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid green;
+    transition: 0.3;
+}
+
+.daftar:hover {
+    color: rgb(0, 107, 0);
+    background-color: #fafafa;
+    text-decoration: none;
+}
+
+.btn-type1 {
+    background-color: white;
+    padding: 12px;
+    border-top: 1px solid #c9c9c9;
+    border-bottom: 1px solid #c9c9c9;
+    border-right: 1px solid #c9c9c9;
+    border-left: none
+}
+
+.input-color {
+    border: 1px solid #c9c9c9;
+    padding-top: 5px;
+    padding-bottom: 6px;
+    width: 60%;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.input-group-type1 {
+    font-size: 15px;
+    display: inline;
+    margin-left: 5%;
+}
+
+.item-link {
+    color: black;
+    opacity: 0.6;
+    transition: 0.3s
+}
+
+.item-link:hover {
+    text-decoration: none;
+    color: black;
+    opacity: 1;
+}

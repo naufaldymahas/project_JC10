@@ -1,0 +1,29 @@
+.category-container {
+    display: flex;
+    margin-left: 50%;
+    transform: translate(-39%);
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    /* width: 300px; */
+}
+
+.card-category {
+    border: 1px solid #d8d8d8;
+    border-radius: 5px;
+    width: 210px;
+}
+
+.card-category span {
+    margin-left: 5px
+}
+
+.category-item  {
+    color: #353535;
+    /* width: 300px; */
+    margin-right: 10px;
+}
+
+.category-item:hover  {
+    color: #353535;
+    text-decoration: none;
+}
