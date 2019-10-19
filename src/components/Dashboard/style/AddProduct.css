@@ -1,5 +1,4 @@
-/* The Modal (background) */
-.modal-type-1 {
+.modal-add {
     display: block; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1000; /* Sit on top */
@@ -12,26 +11,16 @@
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-.active-1 {
-    opacity: 1;
-    transition: 0.3s ease;
-}
-
-.unactive-1 {
-    opacity: 0;
-}
-
-/* Modal Content/Box */
-.modal-content-type-1 {
+.modal-content-add {
     background-color: #fefefe;
     margin: 7% auto; /* 7% from the top and centered */
     padding: 10px;
     border: 1px solid #888;
     border-radius: 8px;
     width: 45%; /* Could be more or less, depending on screen size */
+    transition: all .5 ease-in;
 }
 
-/* The Close Button */
 .close-type-1 {
     color: #aaa;
     float: right;
@@ -51,13 +40,4 @@
     padding-right: 20px;
     padding-left: 20px;
     padding-bottom: 10px
-}
-
-.text-daftar {
-    color: green;
-}
-
-.text-daftar:hover {
-    color: #016601;
-    text-decoration: none;
 }

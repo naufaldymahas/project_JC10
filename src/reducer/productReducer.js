@@ -1,12 +1,14 @@
 const init = {
     addedProduct: [],
-    total: 0
+    total: 0,
 }
 
 var remove, product, newValue, newTotal;
 
 const productReducer = (state = init, action) => {
     switch (action.type) {
+        case 'COOKIE_PRODUCT':
+            return {...state, addedProduct: action.payload.product, total: action.payload.total}
         case 'ADD_ORDER':
             if (state.addedProduct.length === 0) {
                 return {

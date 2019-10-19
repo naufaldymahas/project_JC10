@@ -1,4 +1,8 @@
 import React, { Component, Fragment } from 'react'
+import Cookies from 'universal-cookie'
+import { connect } from 'react-redux'
+import { cookieProduct } from '../../actions/actionCart'
+import { isLogin } from '../../actions/actionAuth'
 
 // Components
 import Navbar from '../../components/Home/Navbar'
@@ -10,6 +14,9 @@ import Products from '../../components/Home/Product'
 // API
 import API from '../../services'
 
+import './Home.css'
+
+const cookie = new Cookies()
 
 class Home extends Component {
 
@@ -28,9 +35,22 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.getDataAPI()
-        this.getData()
-        
+        let isCookie = cookie.get('cart')
+        if (isCookie) {
+            let product = cookie.get('cart').product
+            let total = cookie.get('cart').total
+            this.props.cookieProduct(product, total)
+        }
+        let isLogin = cookie.get('user')
+        if (isLogin) {
+            let { fullName, email } = isLogin
+            this.props.isLogin(fullName, email)
+        }
+
+        setTimeout(() => {
+            this.getDataAPI()
+            this.getData()
+        }, 1000);
     }
     
     getDataAPI = () => {
@@ -48,16 +68,20 @@ class Home extends Component {
         })
     }
 
-    render() {
-        console.log(this.state.data)
+    aneh = () => {
+        let login = document.getElementById('1')
+        console.log(login)
+    }
 
+    render() {
         if (this.state.loading) {
             return (
                 <Fragment>
-                <Navbar onLoginHandler={(value) => {this.loginHandler(value)}} />
-                {this.state.openLogin ? <Login onLoginHandler={(value) => {this.loginHandler(value)}} /> : null}
+                <Navbar aneh={ val => this.aneh(val) } onLoginHandler={(value) => {this.loginHandler(value)}} />
+                {this.state.openLogin ? <Login openLogin={ this.state.openLogin } openLogin={ this.state.openLogin } onLoginHandler={(value) => {this.loginHandler(value)}} /> : null}
+                
                 <div className="container mt-5">
-                    <LandingPage/>
+                    <LandingPage />
                     <Category/>
                             <Products allProducts={this.state.data.allProducts}
                             newestProducts={this.state.data.newestProduct}
@@ -66,9 +90,27 @@ class Home extends Component {
                 </Fragment>
             )
         } else {
-           return null
+           return (
+            <div className="loading">
+                <div className="spinner-grow text-warning" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-warning" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-warning" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        )
         }
     }
 }
 
-export default Home
+const mapStateToProps = state => {
+    return {
+        user: state.authReducer
+    }
+}
+
+export default connect(mapStateToProps, { cookieProduct, isLogin })(Home)

@@ -123,3 +123,68 @@
     color: black;
     opacity: 1;
 }
+
+.profile {
+    display: inline;
+    margin-left: 55px;
+    cursor: pointer;
+    color: black;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.profile button {
+    border: none;
+    background-color: white;
+}
+
+.profile:hover {
+    opacity: 1;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 3rem;
+    right: 4rem;
+    border: 1px solid #cacaca;
+    border-radius: 5px;
+    background-color: white;
+    z-index: 1;
+}
+
+.profile-dropdown-item {
+    list-style: none;
+    padding: 5px;
+    padding-right: 20px;
+    padding-left: 10px;
+    color: #494949;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.profile-dropdown-item li {
+    /* border-bottom: 1px solid #cacaca; */
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: black;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.profile-dropdown-item li:hover {
+    opacity: 1;
+}
+
+.profile-dropdown-item li:last-child {
+    border-top: 1px solid #cacaca;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+}
+
+.link:hover {
+    text-decoration: none;
+    color: black;
+}

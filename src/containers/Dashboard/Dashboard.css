@@ -1,0 +1,12 @@
+.breadcrumb {
+    background-color: rgb(240, 240, 240) !important;
+}
+
+.breadcrumb-link {
+    color: #6c757d;
+}
+
+.breadcrumb-link:hover {
+    color: #545b61;
+    text-decoration: none;
+}

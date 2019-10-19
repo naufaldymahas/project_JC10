@@ -1,0 +1,13 @@
+.btn-product-add {
+    margin-left: 70%;
+    background-color: #5cd4f1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 10px;
+    transition: 0.3s;
+}
+
+.btn-product-add:hover {
+    background-color: #52bad4;
+}

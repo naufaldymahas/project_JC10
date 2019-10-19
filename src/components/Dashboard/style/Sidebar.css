@@ -1,0 +1,54 @@
+
+
+.left-sidebar {
+    position: fixed;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #F3F3F3;
+}
+
+.left-sidebar-logo {
+    color: white;
+    background-color: #252525;
+    position: relative;
+    padding: 10px;
+}
+
+.left-sidebar-items {
+    color: black;
+    list-style: none;
+    padding-left: 21px;
+    padding-top: 12px;
+    display: inline-grid;
+}
+
+.items-container {
+    display: inline-flex;
+    padding-bottom: 10px;
+}
+
+.left-sidebar-items li:last-child {
+    padding-bottom: none;
+}
+
+.items-container {
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.items-container:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.items-container:active {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.item-sidebar {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+}

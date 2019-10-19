@@ -8,13 +8,12 @@ const style = {
 const Cart = (props) => {
 
     const cartProduct = () => {
-        console.log(props)
         const cartProduct = props.addedProduct.map(product => {
                 return (
                     <div key={product.id} className="cart-product">
                         <div className="cart-product-container">
                             <div className="cart-image">
-                                <img src={product.imgUrl} />
+                                <img src={product.imgUrl} alt="product"/>
                             </div>
                             <div className="cart-detail">
                                 <span className="cart-product-name">{product.productName}</span>
@@ -81,7 +80,7 @@ const Cart = (props) => {
                 </Fragment>
                 :
                 <div className="cart-content-none">
-                    <span>Keranjang Masih Kosong 😱</span>
+                    <span>Keranjang Masih Kosong <span aria-label="screaming" role="img">😱</span></span>
                     <button onClick={() => props.cartHandler('close')} className="btn btn-success form-control mt-2">Lanjut Belanja</button>
                 </div>                
                 }

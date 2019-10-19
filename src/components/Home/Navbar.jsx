@@ -1,23 +1,33 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import './Style/Navbar.css'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Cart from './Cart'
-import { cartHandler, removeProduct } from '../../actions/actionCart'
+import { cartHandler as inputHandler, removeProduct } from '../../actions/actionCart'
+import { onLogout } from '../../actions/actionAuth'
 import Cookies from 'universal-cookie'
 const cookies = new Cookies()
 
-class Navbar extends Component {
+const Navbar = ({ onLoginHandler }) =>{
 
-    buttonHandler = (cond ,id, price) => {
+    const { quantity, total, user } = useSelector( state => ({
+        quantity: state.productReducer.addedProduct,
+        total: state.productReducer.total,
+        user: state.authReducer.fullName
+    }) )
+
+    const [ isDropdown, setIsDropdown ] = useState(0)
+
+    const dispatch = useDispatch()
+
+    const buttonHandler = (cond ,id, price) => {
         if (cond === 'plus') {
-            this.props.cartHandler(cond, id, price)
+            dispatch(inputHandler(cond, id, price))
         } else {
-            this.props.cartHandler(cond, id, price)
+            dispatch(inputHandler(cond, id, price))
         }
-        cookies.set('cart', { value: this.props.quantity }, { path: '/'})
     }
 
-    cartHandler = (cond) => {
+    const cartHandler = (cond) => {
         let cart = document.getElementById('cart').classList
         let cartContainer = document.getElementById('cart-container').classList
         if (cond === 'open') {
@@ -31,30 +41,44 @@ class Navbar extends Component {
         }
     }
 
-    renderInput = () => {
+    const renderInput = () => {
         let Qty = 0
-        this.props.quantity.forEach(value => {
+        quantity.forEach(value => {
             Qty += value.quantity
         })
         return Qty
     }
 
-    removeHandler = (id) => {
-        this.props.removeProduct(id)
-        cookies.set('cart', { value: this.props.quantity }, { path: '/'})        
+    const removeHandler = (id) => {
+        dispatch(removeProduct(id))
     }
 
-    render() {
-        // console.log(this.props)
-        console.log(cookies.get('cart'))
-        return (
-            <Fragment>
-            <Cart addedProduct={this.props.quantity} 
-            cartHandler={value => this.cartHandler(value)} 
-            quantity={this.renderInput()}
-            total={this.props.total}
-            buttonHandler={(cond ,id, price) => this.buttonHandler(cond ,id, price)}
-            removeProduct={id => this.removeHandler(id)}/>
+    const dropdownHandler = () => {
+        let caret = document.getElementById('dropdown').classList
+        if (!isDropdown) {
+            caret.replace('fa-caret-left', 'fa-caret-down')
+            setIsDropdown(1)
+        } else {
+            caret.replace('fa-caret-down', 'fa-caret-left')
+            setIsDropdown(0)
+        }
+    }
+
+    const logoutHandler = () => {
+        onLoginHandler(0)
+        setIsDropdown(0)
+        dispatch(onLogout())
+        cookies.remove('user')
+    }
+
+    return (
+        <Fragment>
+            <Cart addedProduct={quantity} 
+            cartHandler={value => cartHandler(value)} 
+            quantity={renderInput()}
+            total={total}
+            buttonHandler={(cond ,id, price) => buttonHandler(cond ,id, price)}
+            removeProduct={id => removeHandler(id)}/>
             <div className="navbars">
                 <div className="navbar-items">
                 <span>ini Logo</span>
@@ -63,32 +87,45 @@ class Navbar extends Component {
                         <input type="text" className="input-color" placeholder="Cari Produk"/>
                         <button className="btn-type1">Search</button>
                     </div>
-                    <div className="items">
-                        <button onClick={() => this.props.onLoginHandler(1)} className="masuk">Masuk</button>
-                        <a href="/register" className="daftar">Daftar</a>
-                    </div>
+                    {
+                        !user
+                        ?
+                        <div className="items">
+                            <button onClick={() => onLoginHandler(1)} className="masuk">Masuk</button>
+                            <a href="/register" className="daftar">Daftar</a>
+                        </div>
+                        :
+                        <div onClick={dropdownHandler} className="profile">
+                            <button>{user} <i style={{fontSize: "14px"}} id="dropdown" className="fa fa-caret-left"></i></button>
+                        </div>
+                    }
                 </div>
+                {
+                    isDropdown
+                    ?
+                    <div className="profile-dropdown">
+                        <ul className="profile-dropdown-item">
+                            <li><a className="link" href="/dashboard">Dashboard</a></li> 
+                            <li>Profile</li>
+                            <li onClick={logoutHandler}>Keluar</li>
+                        </ul>
+                    </div>
+                    :
+                    null
+                }
             </div>
             <div className="basket-fixed">
-            <button onClick={() => this.cartHandler('open')} className="basket" href="/"><i style={{fontSize: "20px"}} className="fa fa-shopping-basket"></i></button>
-                        {this.renderInput() ? 
+            <button onClick={() => cartHandler('open')} className="basket" href="/"><i style={{fontSize: "20px"}} className="fa fa-shopping-basket"></i></button>
+                        {renderInput() ? 
                         <div className="cart-badge">
                             <span className="cart-number">
-                            {this.renderInput()}
+                            {renderInput()}
                             </span>
                         </div>
                         : null}
             </div>
-            </Fragment>
-        )
-    }
+        </Fragment>
+    )
 }
 
-const mapStateToProps = state => {
-    return {
-        quantity: state.productReducer.addedProduct,
-        total: state.productReducer.total
-    }
-}
-
-export default connect(mapStateToProps, { cartHandler, removeProduct })(Navbar)
+export default Navbar
