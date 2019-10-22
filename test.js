@@ -1,9 +1,4 @@
-let x = [{angka: 1, str: 'test'}]
+let d = new Date()
+let dateNow = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
 
-let y = x
-
-let angka = 2
-let str = 'abc'
-
-y.push({angka, str})
-console.log(y)
+console.log(dateNow)

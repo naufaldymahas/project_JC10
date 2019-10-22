@@ -2,6 +2,7 @@ import Get from '../services/'
 import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2'
 const cookies = new Cookies()
+
 const type = {
     LOGIN_SUCCESS: 'LOGIN_SUCCESS',
     IS_LOGIN: 'IS_LOGIN',

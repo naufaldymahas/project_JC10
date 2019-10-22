@@ -11,3 +11,29 @@
 .btn-product-add:hover {
     background-color: #52bad4;
 }
+
+.img-table {
+    position: relative;
+    height: 50px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.img-items {
+    position: absolute;
+    width: 100%;
+    max-width: inherit;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0.6);
+}
+
+.img-table:hover {
+    overflow: visible !important;
+    z-index: 1;
+    transform: scale(10);
+}
+
+td {
+    vertical-align: middle !important;
+}

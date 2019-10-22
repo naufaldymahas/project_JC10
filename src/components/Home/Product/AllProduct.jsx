@@ -6,12 +6,20 @@ const AllProduct = (props) => {
             <div className="col-2-type-2" key={index + 1}>
                 <div className="card-type-2">
                     <div className="img-c">
-                        <img width="800" height="800" src={product.image} alt="ini gambar product"/>
+                        <img style={{height: 'auto'}} src={props.API + product.image} alt="ini gambar product"/>
                     </div>
-                    <div className="card-body-type-1">
+                    <div className="card-body-type-1 position-relative">
                         <h6 className="text-truncate">{product.name}</h6>
                         <p className="text-truncate text-muted">ini description</p>
-                        <p>Rp. {product.price.toLocaleString('id')}</p>
+                        {console.log(product.discount)}
+                        {product.discount ? 
+                        <div style={{marginBottom: "1rem"}}>
+                        <span style={{textDecoration: "line-through"}}>Rp. {product.price.toLocaleString('id')}</span>
+                        <span style={{fontSize: "18px", top: "3rem"}} className="pl-1 text-muted">Rp. {(product.price - (product.price * product.discount/100)).toLocaleString('id')}</span>                     
+                        </div>
+                        :
+                        <p>Rp. {product.price.toLocaleString('id')}</p>                        
+                        }
 
                         {props.renderInput(product.id) ?
                         <div id={`btn-cart${product.id}`} className="text-center">

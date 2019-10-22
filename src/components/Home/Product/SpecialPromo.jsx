@@ -6,7 +6,7 @@ const SpecialPromo = (props) => {
             <div className="col-2-type-2" key={index + 1}>
                 <div className="card-type-2">
                     <div className="img-c">
-                        <img width="800" height="800" src={product.imgUrl} alt="ini gambar product"/>
+                        <img style={{height: 'auto'}} src={product.imgUrl} alt="ini gambar product"/>
                     </div>
                     <div className="card-body-type-1">
                         <h6 className="text-truncate">{product.name}</h6>

@@ -6,6 +6,7 @@ import '../Style/Products.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { addToCart, cartHandler } from '../../../actions/actionCart'
 import Cookies from 'universal-cookie'
+const API = 'http://localhost:9000/'
 // import moment from 'moment'
 const cookies = new Cookies()
 
@@ -66,43 +67,19 @@ const Product = (props) => {
                 <NewProduct products={props.newestProducts} 
                 addCartHandler={(id, name, price, img) => addCartHandler(id, name, price, img)} 
                 buttonHandler={(cond, id, price) => buttonHandler(cond, id, price)} 
-                renderInput={id => renderInput(id)}/> 
+                renderInput={id => renderInput(id)}
+                API={ API }/> 
             </div>
             <span style={{fontSize: "28px"}} className="mt-5">Semua Produk</span>
             <div className="row mt-2">
                 <AllProduct products={props.allProducts} 
                 addCartHandler={(id, name, price, img) => addCartHandler(id, name, price, img)} 
                 buttonHandler={(cond, id, price) => buttonHandler(cond, id, price)} 
-                renderInput={id => renderInput(id)}/>
+                renderInput={id => renderInput(id)}
+                API={ API }/>
             </div>
         </Fragment>
     )
 }
 
-// class Product extends Component {
-
-
-
-//     componentDidUpdate(prevProps) {
-//         // let isExpire = moment(new Date()).add(1, 'm').toDate()
-//         if (this.props.quantity !== prevProps.quantity) {
-               
-//         }
-//     }
-
-//     render() {
-//         return (
-        
-//         )
-//     }
-// }
-
-// const mstp = state => {
-//     return {
-        // quantity: state.productReducer.addedProduct,
-        // total: state.productReducer.total
-//     }
-// }
-
 export default Product
-// export default connect(mstp, {addToCart, cartHandler})(Product)

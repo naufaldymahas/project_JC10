@@ -8,7 +8,6 @@ import { isLogin } from '../../actions/actionAuth'
 import Navbar from '../../components/Home/Navbar'
 import Login from '../../components/Home/Login'
 import LandingPage from '../../components/Home/LandingPage'
-import Category from '../../components/Home/Category'
 import Products from '../../components/Home/Product'
 
 // API
@@ -78,11 +77,10 @@ class Home extends Component {
             return (
                 <Fragment>
                 <Navbar aneh={ val => this.aneh(val) } onLoginHandler={(value) => {this.loginHandler(value)}} />
-                {this.state.openLogin ? <Login openLogin={ this.state.openLogin } openLogin={ this.state.openLogin } onLoginHandler={(value) => {this.loginHandler(value)}} /> : null}
+                {this.state.openLogin ? <Login openLogin={ this.state.openLogin } onLoginHandler={(value) => {this.loginHandler(value)}} /> : null}
                 
                 <div className="container mt-5">
                     <LandingPage />
-                    <Category/>
                             <Products allProducts={this.state.data.allProducts}
                             newestProducts={this.state.data.newestProduct}
                             product={this.state.products}/>

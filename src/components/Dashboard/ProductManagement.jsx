@@ -1,37 +1,61 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect, useRef } from 'react'
 import API from '../../services'
+import AddProduct from './AddProduct'
 import './style/ProductManagement.css'
 
-const ProductManagement = ({ setAddProduct }) => {
+const ProductManagement = () => {
 
     const [ products, setProducts ] = useState([])
     const [ loading, setLoading ] = useState(true)
+    const [ categories, setCategories ] = useState([])
+    const [ addProduct, setAddProduct ] = useState(false)
 
     const getProducts = () => {
         API.getProductsDataAPI()
         .then(res => setProducts(res.data.allProducts))
     }
 
-    // const newProduct = ( val ) => {
-    //     setAddProduct(val)
-    // }
-
     useEffect(() => {
-        console.log(setAddProduct)
         getProducts()
         setTimeout(() => {
             setLoading(false)
         }, 800);
     }, [])
 
+    const mounted = useRef(false)
+
+    useEffect(() => {
+        if (!mounted.current) {
+            mounted.current = true
+            return;
+        }
+        let categories = []
+        products.map(product => {
+            if (!categories.includes(product.category)) {
+                categories.push(product.category)
+            }
+            return null
+        })
+        setCategories(categories)
+    }, [products])
+
     const renderProduct = () => {
         let render = products.map( (product, index) => {
             return (
                 <tr key={product.id}>
                     <td>{index + 1}</td>
-                    <td>{product.name}</td>
-                    <td>{product.price}</td>
+                    <td>
+                        <div className="img-table">
+                            <img className="img-items" alt="gambar" src={ 'http://localhost:9000/' + product.image } />
+                        </div>
+                    </td>
+                    <td>
+                        <span>{product.name}</span>
+                    </td>
+                    <td>{product.price.toLocaleString('id')}</td>
                     <td>{product.category}</td>
+                    <td>{product.stock}</td>
+                    <td>{product.discAvailable === 'no_disc' ? 'Inactive' : 'Discout ' + product.discAvailable.split('_')[1] + '%'}</td>
                     <td>
                         <button className="btn btn-warning mr-2">Edit</button>
                         <button className="btn btn-danger">Delete</button>
@@ -62,9 +86,12 @@ const ProductManagement = ({ setAddProduct }) => {
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Image</th>
                             <th>Name</th>
                             <th>Price</th>
                             <th>Category</th>
+                            <th>Stock</th>
+                            <th>Discount</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -75,6 +102,9 @@ const ProductManagement = ({ setAddProduct }) => {
                 }
                 
             </div>
+        
+            { addProduct ? <AddProduct categories={ categories } setAddProduct={ setAddProduct } /> : null}
+
         </Fragment>
     )
 }

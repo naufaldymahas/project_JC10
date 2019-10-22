@@ -1,24 +1,77 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import './style/AddProduct.css'
+import API from '../../services'
+import Swal from 'sweetalert2'
 
-const AddProduct = ({ setAddProduct }) => {
+const AddProduct = ({ setAddProduct, categories }) => {
 
     const [ data, setData ] = useState({
         productName: '',
         productPrice: '',
         productCategory: '',
-        productImage: ''
+        productImage: '',
+        productDescription: ''
     })
+
+    const [ warning, setWarning ] = useState('')
+
+    const fileBtn = useRef('fileBtn')
+
+    const focusFileBtn = () => fileBtn.current.click()
 
     const inputHandler = (cond, e) => {
         let { value } = e.target
         if (cond === 'name') {
             setData({...data, productName: value})
         } else if (cond === 'price') {
-            {isNaN(value) ? setData({...data, productPrice: ''}) : setData({...data, productPrice: value})}
+            if (isNaN(value)) {
+                setData({...data, productPrice: ''})
+            } else {
+                setData({...data, productPrice: value})
+            }
         } else if (cond === 'category') {
             setData({...data, productCategory: value})
+        } else if (cond ==='description') {
+            setData({...data, productDescription: value})
+        } else {
+            let file = e.target.files[0]
+            if (file.size > 2000000) {
+                setWarning('Anda memasukkan gambar lebih dari 2mb!')
+            } else {
+                setData({...data, productImage: e.target.files[0]})
+            }
         }
+    }
+
+
+    const submitHandler = () => {
+        if (data.productCategory && data.productDescription && data.productImage && data.productName && data.productPrice) {
+            let fd = new FormData()
+            let DATA = {
+                name: data.productName,
+                price: data.productPrice,
+                description: data.productDescription,
+                category: data.productCategory
+            }
+            fd.append('product', data.productImage)
+            fd.append('data', JSON.stringify(DATA))
+            API.addProducts(fd)
+            .then(res => {
+            let { message } = res.data
+            Swal.fire({
+                type: 'success',
+                title: message,
+                timer: 1000
+            })
+            setAddProduct(false)
+            })
+        } else {
+            Swal.fire({
+                type: 'error',
+                title: 'Please fill the form!'
+            })
+        }
+        
     }
 
     return (
@@ -38,17 +91,32 @@ const AddProduct = ({ setAddProduct }) => {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label style={{fontSize: "15px"}} className="text-muted" htmlFor="category">Category</label>
-                            <input value={data.productCategory} onChange={ e => inputHandler('category', e) } className="form-control" type="text" id="category"/>
+                            <label style={{fontSize: "15px"}} className="text-muted" htmlFor="category">Description</label>
+                            <input value={data.productDescription} onChange={ e => inputHandler('description', e) } className="form-control" type="text" id="category"/>
+                        </div>              
+                        <div className="form-group">
+
+                            <select defaultValue={data.categories} onChange={ e => inputHandler('category', e) }>
+                                <option value=''>Select Category: </option>
+                                {categories.map((category, index) => {
+                                    return <option key={index + 1} value={category}>{category}</option>
+                                })}
+                            </select>
                         </div>              
                         <div className="form-group">
                             <label style={{fontSize: "15px"}} className="text-muted" htmlFor="image">Image</label>
                             <br/>
-                            <input type="file" id="image"/>
+                            <input className='d-none' ref={fileBtn} onChange={ e => inputHandler('image', e) } type="file" id="image"/>
+                            <input className='btn btn-success' 
+                            value={ data.productImage ? data.productImage.name : 'Select File' }
+                            type='button' onClick={focusFileBtn}/>
+                            <span style={{fontSize: '14px'}} className="text-danger">{!warning ? null : warning}</span>
+                            <br/>
+                            <small className="text-danger">maximum file 2mb</small>
                         </div>              
                 </form>
                 <div>
-                    <button className="btn btn-primary mr-2">Submit</button>
+                    <button onClick={submitHandler} className="btn btn-primary mr-2">Submit</button>
                     <button onClick={ () => setAddProduct(false) } className="btn btn-danger">Cancel</button>
                 </div>
             </div>

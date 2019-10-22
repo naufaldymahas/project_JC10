@@ -52,3 +52,16 @@
     height: 20px;
     text-align: center;
 }
+
+.item-links {
+    color: black;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.item-links:hover {
+    color: black;
+    text-decoration: none;
+    opacity: 1;
+}
+
