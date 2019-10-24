@@ -9,10 +9,11 @@ const cookies = new Cookies()
 
 const Navbar = ({ onLoginHandler }) =>{
 
-    const { quantity, total, user } = useSelector( state => ({
+    const { quantity, total, user, id } = useSelector( state => ({
         quantity: state.productReducer.addedProduct,
         total: state.productReducer.total,
-        user: state.authReducer.fullName
+        user: state.authReducer.fullName,
+        id: state.authReducer.id
     }) )
 
     const [ isDropdown, setIsDropdown ] = useState(0)
@@ -106,7 +107,7 @@ const Navbar = ({ onLoginHandler }) =>{
                     <div className="profile-dropdown">
                         <ul className="profile-dropdown-item">
                             <li><a className="link" href="/dashboard">Dashboard</a></li> 
-                            <li>Profile</li>
+                            <li><a href={`/profile/${id}`}>Profil</a></li>
                             <li onClick={logoutHandler}>Keluar</li>
                         </ul>
                     </div>

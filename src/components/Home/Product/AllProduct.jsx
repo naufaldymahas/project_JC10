@@ -11,7 +11,6 @@ const AllProduct = (props) => {
                     <div className="card-body-type-1 position-relative">
                         <h6 className="text-truncate">{product.name}</h6>
                         <p className="text-truncate text-muted">ini description</p>
-                        {console.log(product.discount)}
                         {product.discount ? 
                         <div style={{marginBottom: "1rem"}}>
                         <span style={{textDecoration: "line-through"}}>Rp. {product.price.toLocaleString('id')}</span>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import './style/AddProduct.css'
 import API from '../../services'
 import Swal from 'sweetalert2'

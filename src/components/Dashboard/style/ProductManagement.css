@@ -31,7 +31,7 @@
 .img-table:hover {
     overflow: visible !important;
     z-index: 1;
-    transform: scale(10);
+    transform: scale(5);
 }
 
 td {

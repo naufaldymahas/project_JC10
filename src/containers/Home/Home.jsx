@@ -40,11 +40,11 @@ class Home extends Component {
             let total = cookie.get('cart').total
             this.props.cookieProduct(product, total)
         }
-        let isLogin = cookie.get('user')
-        if (isLogin) {
-            let { fullName, email } = isLogin
-            this.props.isLogin(fullName, email)
-        }
+        // let isLogin = cookie.get('user')
+        // if (isLogin) {
+        //     let { id, fullName, email } = isLogin
+        //     this.props.isLogin(id, fullName, email)
+        // }
 
         setTimeout(() => {
             this.getDataAPI()

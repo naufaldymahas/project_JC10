@@ -7,11 +7,13 @@ const getProductsData = () => Get('products', false)
 const getProductsDataAPI = () => Get('product/getproducts', true)
 const loginHandler = (input) => Get('auth/login', true, input)
 const getAllCustomers = () => Get('auth/customers', true)
+const getAddress = (input) => Get('user/address', true, input)
 
 
 // Post
 const registerUser = (data) => Post('auth/register', true, data)
 const addProducts = (data) => Post('product/addproduct', true, data)
+const addAddress = (data) => Post('user/addaddress', true, data)
 
 const API = {
     getProductsData,
@@ -19,7 +21,9 @@ const API = {
     getProductsDataAPI,
     loginHandler,
     getAllCustomers,
-    addProducts
+    addProducts,
+    addAddress,
+    getAddress
 }
 
 export default API

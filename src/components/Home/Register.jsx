@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect, useRef } from 'react'
 import API from '../../services'
 import Swal from 'sweetalert2'
 import './Style/Register.css'
@@ -17,6 +17,8 @@ const Register = () => {
         loading: true,
         notification: ''
     })
+
+    const [ err, setErr ] = useState(true)
 
     const submitHandler = () => {
         setState2({...State2, loading: false})
@@ -58,13 +60,27 @@ const Register = () => {
         
     }
 
+    const mounted = useRef(true)
+
+    useEffect(() => {
+        if (mounted.current) {
+            mounted.current = false
+        } else {
+            if (State.email.indexOf('@') === -1) {
+                setErr(false)
+            } else {
+                setErr(true)
+            }
+        }
+    }, [State.email])
+
     return (
         <Fragment>
             <div className="text-center mt-3">
                 <a className="to-home" href="/">Home</a>
             </div>
-            <div id="myModal" className="card-type-1">
-                <div className="card-content-type-1">
+            <div id="myModal" className="card-type-1 position-relative">
+                <div className="card-content-type-2">
                     <div className="card-padding">
                         <div className="mt-3 mb-4">
                             <span style={{fontSize: "20px", fontStyle: "bold"}}>Daftar</span>
@@ -84,7 +100,8 @@ const Register = () => {
                         </div>
                         <div className="form-group">
                             <label style={{fontSize: "15px"}} className="text-muted" htmlFor="email">Masukkan Email</label>
-                            <input value={State.email} onChange={e => setState({...State, email: e.target.value})} className="form-control" type="text" id="email"/>
+                            <input value={State.email} onChange={e => setState({...State, email: e.target.value})} className="form-control" type="email" id="email"/>
+                            {!err ? <span style={{fontSize: '14px'}} className="text-danger">Email tidak benar</span> : null}
                         </div>
                         <div className="form-group">
                             <label style={{fontSize: "15px"}} className="text-muted" htmlFor="password">Masukkan Password</label>
@@ -100,23 +117,6 @@ const Register = () => {
             </div>
         </Fragment>
     )
-
 }
-
-// class Register extends Component {
-
-//     state = {
-//         loading: true,
-//         error: ''
-//     }
-
-
-
-//     render() {
-//         return (
-            
-//         )
-//     }
-// }
 
 export default Register

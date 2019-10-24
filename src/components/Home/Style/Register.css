@@ -11,9 +11,9 @@
 }
 
 /* Modal Content/Box */
-.card-content-type-1 {
+.card-content-type-2 {
     background-color: #fefefe;
-    margin: 6% 45%; /* 15% from the top and centered */
+    margin: 2% 45%; /* 15% from the top and centered */
     padding: 10px;
     border: 1px solid #888;
     border-radius: 8px;

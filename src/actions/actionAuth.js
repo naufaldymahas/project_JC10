@@ -17,7 +17,6 @@ export const onLogin = (email, password) => {
         }
         Get.loginHandler(params)
         .then(res => {
-            console.log(res.data)
             let { status, message } = res.data
             if (status === 404) {
                 Swal.fire({
@@ -30,15 +29,17 @@ export const onLogin = (email, password) => {
                     title: message
                 })
             } else {
-                let { fullName } = res.data.result
+                let { id, fullName } = res.data.result
                 Swal.fire({
                     type: 'success',
                     title: 'Login Success!'
                 })
-                cookies.set('user', { fullName, email }, { path: '/' })
+                console.log(id, fullName)
+                cookies.set('user', { id, fullName, email }, { path: '/' })
                 dispatch({
                     type: type.LOGIN_SUCCESS,
                     payload: {
+                        id,
                         fullName,
                         email
                     }
@@ -49,11 +50,12 @@ export const onLogin = (email, password) => {
     }
 }
 
-export const isLogin = (fullName, email) => {
+export const isLogin = (id, fullName, email) => {
     return (
         {
             type: type.IS_LOGIN,
             payload: {
+                id,
                 fullName, 
                 email
             }
