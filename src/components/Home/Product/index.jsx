@@ -51,6 +51,8 @@ const Product = (props) => {
         console.log(cookies.get('cart'))
     }, [quantity, total])
 
+    console.log(props)
+
     return (
         <Fragment>
             <span style={{fontSize: "28px"}}>Special Promos</span>

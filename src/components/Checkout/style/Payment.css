@@ -1,0 +1,17 @@
+.image-container-type-2 {
+    position: relative;
+    height: 80px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.image-bank {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    max-width: inherit;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(1);
+}

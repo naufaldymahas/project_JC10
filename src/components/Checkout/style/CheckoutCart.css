@@ -1,0 +1,44 @@
+.checkout-container {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+}
+
+.image-container {
+    position: relative;
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.image-cart {
+    position: absolute;
+    height: 100%;
+    max-width: inherit;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+.input-voucher {
+    font-weight: 300;
+    padding: 0;
+    color: #ffc107;
+    transition: 0.3s;
+}
+
+.input-voucher:hover {
+    cursor: pointer;
+    color: #e9b006;
+}
+
+@media only screen and (max-width: 768px) {
+    .checkout-container {
+        margin-top: 10px;
+    }
+    .pl-15 {
+        margin-left: 15px !important;
+    }
+    .text-res {
+        overflow: unset !important;
+    }
+}

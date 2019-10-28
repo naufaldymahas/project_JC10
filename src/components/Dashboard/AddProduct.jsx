@@ -78,7 +78,7 @@ const AddProduct = ({ setAddProduct, categories }) => {
         <div className="modal-add">
             <div className="modal-content-add">
                 <form>
-                <div className="form-group">
+                        <div className="form-group">
                             <div className="form-row">
                                 <div className="col">
                                     <label className="text-muted" style={{fontSize: "15px"}} htmlFor="pn">Product Name</label>
@@ -95,7 +95,6 @@ const AddProduct = ({ setAddProduct, categories }) => {
                             <input value={data.productDescription} onChange={ e => inputHandler('description', e) } className="form-control" type="text" id="category"/>
                         </div>              
                         <div className="form-group">
-
                             <select defaultValue={data.categories} onChange={ e => inputHandler('category', e) }>
                                 <option value=''>Select Category: </option>
                                 {categories.map((category, index) => {
@@ -115,7 +114,7 @@ const AddProduct = ({ setAddProduct, categories }) => {
                             <small className="text-danger">maximum file 2mb</small>
                         </div>              
                 </form>
-                <div>
+            <div>
                     <button onClick={submitHandler} className="btn btn-primary mr-2">Submit</button>
                     <button onClick={ () => setAddProduct(false) } className="btn btn-danger">Cancel</button>
                 </div>

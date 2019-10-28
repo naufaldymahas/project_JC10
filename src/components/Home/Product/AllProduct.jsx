@@ -10,14 +10,16 @@ const AllProduct = (props) => {
                     </div>
                     <div className="card-body-type-1 position-relative">
                         <h6 className="text-truncate">{product.name}</h6>
-                        <p className="text-truncate text-muted">ini description</p>
+                        {/* <p style={{fontSize: "14px"}} className="text-truncate text-muted">{product.unit}</p> */}
                         {product.discount ? 
-                        <div style={{marginBottom: "1rem"}}>
-                        <span style={{textDecoration: "line-through"}}>Rp. {product.price.toLocaleString('id')}</span>
-                        <span style={{fontSize: "18px", top: "3rem"}} className="pl-1 text-muted">Rp. {(product.price - (product.price * product.discount/100)).toLocaleString('id')}</span>                     
+                        <div style={{height: "80px", display: "grid"}}>
+                            <span style={{textDecoration: "line-through", height: "0"}}>Rp. {product.price.toLocaleString('id')}</span>
+                            <span style={{fontSize: "16px", top: "3rem"}} className="pl-1 text-muted">Rp. {(product.price - (product.price * product.discount/100)).toLocaleString('id')}<small>/{product.unit}</small></span>                     
                         </div>
                         :
-                        <p>Rp. {product.price.toLocaleString('id')}</p>                        
+                        <div style={{height: "80px"}}>
+                            <span>Rp. {product.price.toLocaleString('id')}</span>
+                        </div>
                         }
 
                         {props.renderInput(product.id) ?

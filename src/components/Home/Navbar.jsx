@@ -5,6 +5,9 @@ import Cart from './Cart'
 import { cartHandler as inputHandler, removeProduct } from '../../actions/actionCart'
 import { onLogout } from '../../actions/actionAuth'
 import Cookies from 'universal-cookie'
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import Dropdown from 'react-bootstrap/Dropdown'
+
 const cookies = new Cookies()
 
 const Navbar = ({ onLoginHandler }) =>{
@@ -85,7 +88,7 @@ const Navbar = ({ onLoginHandler }) =>{
                 <span>ini Logo</span>
                 <a href="/" className="ml-3 item-link">Kategori</a>
                     <div className="input-group-type1">
-                        <input type="text" className="input-color" placeholder="Cari Produk"/>
+                        <input type="text" className="input-color px-2" placeholder="Cari Produk"/>
                         <button className="btn-type1">Search</button>
                     </div>
                     {
@@ -106,11 +109,12 @@ const Navbar = ({ onLoginHandler }) =>{
                     ?
                     <div className="profile-dropdown">
                         <ul className="profile-dropdown-item">
-                            <li><a className="link" href="/dashboard">Dashboard</a></li> 
+                            <li style={{paddingTop: "10px"}}><a className="link" href="/dashboard">Dashboard</a></li> 
                             <li><a href={`/profile/${id}`}>Profil</a></li>
-                            <li onClick={logoutHandler}>Keluar</li>
+                            <li style={{paddingBottom: "5px"}} onClick={logoutHandler}>Keluar</li>
                         </ul>
                     </div>
+
                     :
                     null
                 }

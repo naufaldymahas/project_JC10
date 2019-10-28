@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect, useRef } from 'react'
 import API from '../../services'
 import AddProduct from './AddProduct'
+import { Popover, Pane, Position, Button, Image } from 'evergreen-ui'
 import './style/ProductManagement.css'
 
 const ProductManagement = () => {
@@ -45,9 +46,26 @@ const ProductManagement = () => {
                 <tr key={product.id}>
                     <td>{index + 1}</td>
                     <td>
-                        <div className="img-table">
+                    <Popover
+                    content={
+                        <Pane
+                        width={240}
+                        height={200}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        flexDirection="column"
+                        >
+                        <Image style={{width: "100%", height: "auto"}} src={ 'http://localhost:9000/' + product.image }></Image>
+                        </Pane>    
+                    }
+                    position={Position.RIGHT}
+                    >
+                    <Button intent="none" appearance="minimal">See Image</Button>
+                    </Popover>
+                        {/* <div className="img-table">
                             <img className="img-items" alt="gambar" src={ 'http://localhost:9000/' + product.image } />
-                        </div>
+                        </div> */}
                     </td>
                     <td>
                         <span>{product.name}</span>
@@ -55,6 +73,8 @@ const ProductManagement = () => {
                     <td>{product.price.toLocaleString('id')}</td>
                     <td>{product.category}</td>
                     <td>{product.stock}</td>
+                    <td>{product.unit}</td>
+                    <td>{product.active ? product.active : 'Inactive'}</td>
                     <td>{product.discAvailable === 'no_disc' ? 'Inactive' : 'Discout ' + product.discAvailable.split('_')[1] + '%'}</td>
                     <td>
                         <button className="btn btn-warning mr-2">Edit</button>
@@ -65,6 +85,8 @@ const ProductManagement = () => {
         })
         return render
     }
+
+    console.log(products)
 
     return (
         <Fragment>
@@ -91,6 +113,8 @@ const ProductManagement = () => {
                             <th>Price</th>
                             <th>Category</th>
                             <th>Stock</th>
+                            <th>Satuan</th>
+                            <th>Aktif</th>
                             <th>Discount</th>
                             <th>Action</th>
                         </tr>

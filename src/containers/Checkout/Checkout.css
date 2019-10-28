@@ -1,0 +1,5 @@
+.disabled-type-1 {
+    background-color: #b9b9b9 !important;
+    border-color: #b9b9b9 !important;
+    cursor: not-allowed !important;
+}

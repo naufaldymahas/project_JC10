@@ -209,3 +209,12 @@
     display: flex;
     width: 90px;
 }
+
+.btn-checkout {
+    color: white;
+}
+
+.btn-checkout:hover {
+    color: white;
+    text-decoration: none;
+}

@@ -52,7 +52,7 @@ const Cart = (props) => {
             <div className="cart-content">
                 {props.addedProduct.length ?
                 <Fragment>
-                    <div style={style}>
+                    {/* <div style={style}>
                         <span className="cart-content-title">Area Pengiriman</span>
                         <br/>
                         <span>DKI Jakarta</span>
@@ -60,7 +60,7 @@ const Cart = (props) => {
                         <span className="cart-content-title">Tanggal Pengiriman</span>
                         <br/>
                         <span>DKI Jakarta</span>
-                    </div>
+                    </div> */}
                     {cartProduct()}
                     
                     <div className="cart-checkout">
@@ -75,7 +75,7 @@ const Cart = (props) => {
                         <div className="cart-checkout-price">
                         <span style={{marginTop: "auto", marginBottom: "auto"}}>Rp. {props.total.toLocaleString('id')}</span>
                         </div>
-                        <button className="btn btn-success ml-3">Checkout</button>
+                        <button className="btn btn-success ml-3"><a className="btn-checkout" href="/checkout">Checkout</a></button>
                     </div>
                 </Fragment>
                 :

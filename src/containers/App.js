@@ -10,6 +10,7 @@ import Register from '../components/Home/Register'
 import Dashboard from './Dashboard/Dashboard'
 import Profile from './Profile/Profile'
 import Checkout from './Checkout/Checkout'
+import ProductOrder from '../components/Checkout/ProductOrder'
 
 const cookies = new Cookies()
 
@@ -36,6 +37,7 @@ const App = () => {
                 <Route path="/dashboard" component={Dashboard}/>
                 <Route path="/profile/:userId" component={Profile}/>
                 <Route path="/checkout" component={Checkout}/>
+                <Route path="/order" component={ProductOrder}/>
             </BrowserRouter>
         </Fragment>
     )

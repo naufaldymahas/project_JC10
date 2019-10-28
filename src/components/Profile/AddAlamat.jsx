@@ -50,8 +50,8 @@ const AddAlamat = ({ show, setShow, id }) => {
                             <div className="form-group col-md-6 col-sm-6">
                                 <label htmlFor="nomerHp">Nomer Hp</label>
                                 <div className="col-md-10 d-inline-flex pl-0 pr-0">
-                                <span className="pl-0 my-auto text-muted">+62</span>
-                                <input className="w-100" value={isNaN(data.nomerHp)? '' : data.nomerHp} onChange={e => dataHandler('nomerHp', parseInt(e.target.value))} id="nomerHp" type="text"/>
+                                    <span className="pl-0 my-auto text-muted">+62</span>
+                                    <input className="w-100" value={isNaN(data.nomerHp)? '' : data.nomerHp} onChange={e => dataHandler('nomerHp', parseInt(e.target.value))} id="nomerHp" type="text"/>
                                 </div>
                             </div>
                         </div>
