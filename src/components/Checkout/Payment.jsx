@@ -1,12 +1,12 @@
 import React from 'react'
 import './style/Payment.css'
 
-const Payment = () => {
+const Payment = ({ data, setData, inputHandler }) => {
     return (
         <div className="checkout-container mt-2">
             <div className="card-identity" style={{backgroundColor: "green"}}>
                 <i className="fa fa-credit-card"></i>
-                <span>Pembayaran</span>
+                <span>Rekening</span>
             </div>
             <div className="container">
                 <h5 className="text-muted my-1">Pilih Bank</h5>
@@ -21,7 +21,7 @@ const Payment = () => {
                             </span>
                         </label>
                         <div>
-                            <input name="BANK" type="radio" id="bankMandiri"/>
+                            <input onChange={ e => setData({...data, bank: e.target.value}) } value="Mandiri" name="BANK" type="radio" id="bankMandiri"/>
                         </div>
                     </div>
                     <div className="col-md-6 px-0 text-center">
@@ -34,7 +34,7 @@ const Payment = () => {
                             </span>
                         </label>
                         <div>
-                            <input name="BANK" type="radio" id="bankBCA"/>
+                            <input onChange={ e => setData({...data, bank: e.target.value}) } value="BCA" name="BANK" type="radio" id="bankBCA"/>
                         </div>
                     </div>
                 </div>
@@ -48,11 +48,11 @@ const Payment = () => {
 
                     <div className="col-md-6 pl-0">
                         <label htmlFor="cardHolder" className="text-muted text-truncate text-res">Nama Pemilik Kartu</label>
-                        <input className="form-control" id="cardHolder" type="text"/>
+                        <input value={ data.namaPemilik } onChange={ e => inputHandler('namaPemilik', e.target.value)} className="form-control" id="cardHolder" type="text"/>
                     </div>
                     <div className="col-md-6 pl-0">
                         <label htmlFor="cardNumber" className="text-muted text-truncate text-res">Nomer Rekening</label>
-                        <input className="form-control" id="cardHolder" type="text"/>
+                        <input value={ data.nomerRekening } onChange={ e => inputHandler('nomerRekening', parseInt(e.target.value), true)} className="form-control" id="cardHolder" type="text"/>
                     </div>
                 </div>
             </div>

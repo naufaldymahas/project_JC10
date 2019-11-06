@@ -6,11 +6,11 @@ const type = {
     COOKIE_PRODUCT: 'COOKIE_PRODUCT'
 }
 
-export const addToCart = (id, productName, productPrice, productImg) => {
+export const addToCart = (id, productName, productPrice, productImg, productUnit, productDiscount) => {
     return {
         type: type.ADD_ORDER,
         payload: {
-            id, productName, productPrice, productImg
+            id, productName, productPrice, productImg, productUnit, productDiscount
         }
     }
 }

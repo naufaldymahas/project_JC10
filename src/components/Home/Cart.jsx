@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useRef, useEffect } from 'react'
 import './Style/Cart.css'
 
 const style = {
@@ -7,16 +7,27 @@ const style = {
 
 const Cart = (props) => {
 
+    const node = useRef()
+
+    const outsideClick = e => {
+        if (node.current.contains(e.target)) return
+        else props.cartHandler('close')
+    }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', outsideClick)
+    }, [])
+
     const cartProduct = () => {
         const cartProduct = props.addedProduct.map(product => {
                 return (
                     <div key={product.id} className="cart-product">
                         <div className="cart-product-container">
                             <div className="cart-image">
-                                <img src={product.imgUrl} alt="product"/>
+                                <img src={ 'http://localhost:9000/' + product.imgUrl} alt="product"/>
                             </div>
                             <div className="cart-detail">
-                                <span className="cart-product-name">{product.productName}</span>
+                                <span className="cart-product-name px-0">{product.productName}</span>
                                 <p>{`1 pcs (500gr)`}</p>
                                 <span className="price">Rp. {product.productPrice.toLocaleString('id')}/ 1pcs</span>
                                 <button onClick={() => props.removeProduct(product.id)} className="cart-remove-product"><i className="fa fa-trash"></i></button>
@@ -40,7 +51,7 @@ const Cart = (props) => {
 
     return (
         <div id="cart-container">
-        <div id="cart" className="cart-right unactive">
+        <div id="cart" ref={ node } className="cart-right unactive">
             <div className="cart-header">
                 <div className="cart-header-content">
                     <button onClick={() => props.cartHandler('close')}><i className="fa fa-arrow-left"></i></button>
@@ -52,19 +63,15 @@ const Cart = (props) => {
             <div className="cart-content">
                 {props.addedProduct.length ?
                 <Fragment>
-                    {/* <div style={style}>
+                    <div style={style}>
                         <span className="cart-content-title">Area Pengiriman</span>
                         <br/>
                         <span>DKI Jakarta</span>
-                        <br/>
-                        <span className="cart-content-title">Tanggal Pengiriman</span>
-                        <br/>
-                        <span>DKI Jakarta</span>
-                    </div> */}
+                    </div>
                     {cartProduct()}
                     
                     <div className="cart-checkout">
-                        <div style={{position: "relative", marginTop: "auto", marginBottom: "auto"}}>
+                        <div style={{position: "relative"}}>
                             <i data-badge className="fa fa-shopping-basket cart-basket"></i>
                             {props.quantity ? 
                             <div data-badge className="cart-basket-badge">
@@ -73,9 +80,11 @@ const Cart = (props) => {
                             : null}
                         </div>
                         <div className="cart-checkout-price">
-                        <span style={{marginTop: "auto", marginBottom: "auto"}}>Rp. {props.total.toLocaleString('id')}</span>
+                            <span style={{marginTop: "auto", marginBottom: "auto"}}>Rp. {props.total.toLocaleString('id')}</span>
                         </div>
-                        <button className="btn btn-success ml-3"><a className="btn-checkout" href="/checkout">Checkout</a></button>
+                    </div>
+                    <div className="text-center px-1 mt-2">
+                        <a className="btn-checkout" href="/checkout"><button className="btn btn-success form-control">Checkout</button></a>
                     </div>
                 </Fragment>
                 :

@@ -1,0 +1,22 @@
+.table-payment tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.img-preview {
+    cursor: pointer;
+}
+
+
+.img-transaction {
+    display: block;
+    width: 300px;
+    position: absolute;
+    top: -240px;
+    right: 50%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.img-transaction:hover {
+    display: block !important;
+}

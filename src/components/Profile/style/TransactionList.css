@@ -1,0 +1,14 @@
+.transaction-items {
+    height: 50px;
+    border-right: 1px solid rgba(0,0,0,.125);
+    margin-top: auto;
+    margin-bottom: auto;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-transaction-detail {
+    background-color: white;
+    border: none;
+}

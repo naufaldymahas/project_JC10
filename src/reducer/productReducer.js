@@ -19,7 +19,9 @@ const productReducer = (state = init, action) => {
                                     productName: action.payload.productName,
                                     productPrice: action.payload.productPrice,
                                     imgUrl: action.payload.productImg,
-                                    quantity: 1
+                                    quantity: 1,
+                                    productUnit: action.payload.productUnit,
+                                    productDiscount: action.payload.productDiscount
                                     }],
                     total: action.payload.productPrice
                 }
@@ -28,11 +30,15 @@ const productReducer = (state = init, action) => {
                         ...state, 
                         addedProduct: [
                             ...state.addedProduct, 
-                            {id: action.payload.id, 
-                            productName: action.payload.productName, 
-                            productPrice: action.payload.productPrice,
-                            imgUrl: action.payload.productImg,
-                            quantity: 1}
+                            {
+                                id: action.payload.id, 
+                                productName: action.payload.productName, 
+                                productPrice: action.payload.productPrice,
+                                imgUrl: action.payload.productImg,
+                                quantity: 1,
+                                productUnit: action.payload.productUnit,
+                                productDiscount: action.payload.productDiscount
+                        }
                             ],
                         total: state.total + action.payload.productPrice
                     }

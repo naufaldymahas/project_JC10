@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useRef, useEffect } from 'react'
 import './Style/Navbar.css'
 import { useDispatch, useSelector } from 'react-redux'
 import Cart from './Cart'
@@ -10,7 +10,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 
 const cookies = new Cookies()
 
-const Navbar = ({ onLoginHandler }) =>{
+const Navbar = ({ setLogin }) =>{
 
     const { quantity, total, user, id } = useSelector( state => ({
         quantity: state.productReducer.addedProduct,
@@ -69,11 +69,32 @@ const Navbar = ({ onLoginHandler }) =>{
     }
 
     const logoutHandler = () => {
-        onLoginHandler(0)
+        setLogin(0)
         setIsDropdown(0)
         dispatch(onLogout())
         cookies.remove('user')
     }
+
+    const outsideHandler = e => {
+        if (node.current.contains(e.target)) {
+            // setIsDropdown(1)
+            return
+        } else {
+            setIsDropdown(0)
+        }
+    }
+
+    const node = useRef()
+
+    // useEffect(() => {
+        
+    //     if (isDropdown) document.addEventListener('mousedown', outsideHandler)
+    //     else document.removeEventListener('mousedown', outsideHandler)
+
+    //     return () => {
+    //         document.removeEventListener('mousedown', outsideHandler)
+    //     }
+    // }, [isDropdown])
 
     return (
         <Fragment>
@@ -95,11 +116,11 @@ const Navbar = ({ onLoginHandler }) =>{
                         !user
                         ?
                         <div className="items">
-                            <button onClick={() => onLoginHandler(1)} className="masuk">Masuk</button>
+                            <button onClick={() => setLogin(1)} className="masuk">Masuk</button>
                             <a href="/register" className="daftar">Daftar</a>
                         </div>
                         :
-                        <div onClick={dropdownHandler} className="profile">
+                        <div ref={ node } onClick={dropdownHandler} className="profile">
                             <button>{user} <i style={{fontSize: "14px"}} id="dropdown" className="fa fa-caret-left"></i></button>
                         </div>
                     }
@@ -107,14 +128,13 @@ const Navbar = ({ onLoginHandler }) =>{
                 {
                     isDropdown
                     ?
-                    <div className="profile-dropdown">
+                    <div ref={ node } className="profile-dropdown">
                         <ul className="profile-dropdown-item">
                             <li style={{paddingTop: "10px"}}><a className="link" href="/dashboard">Dashboard</a></li> 
                             <li><a href={`/profile/${id}`}>Profil</a></li>
                             <li style={{paddingBottom: "5px"}} onClick={logoutHandler}>Keluar</li>
                         </ul>
                     </div>
-
                     :
                     null
                 }

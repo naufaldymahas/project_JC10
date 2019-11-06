@@ -5,7 +5,6 @@ import './Style/Register.css'
 
 const Register = () => {
 
-
     const [ State, setState ] = useState({
         firstName: '',
         lastName: '',

@@ -29,12 +29,11 @@ export const onLogin = (email, password) => {
                     title: message
                 })
             } else {
-                let { id, fullName } = res.data.result
+                let { id, fullName } = res.data.result[0]
                 Swal.fire({
                     type: 'success',
                     title: 'Login Success!'
                 })
-                console.log(id, fullName)
                 cookies.set('user', { id, fullName, email }, { path: '/' })
                 dispatch({
                     type: type.LOGIN_SUCCESS,

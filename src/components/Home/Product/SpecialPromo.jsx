@@ -16,7 +16,9 @@ const SpecialPromo = (props) => {
                         {props.renderInput(product.id) ?
                         <div id={`btn-cart${product.id}`} className="text-center">
                             <button onClick={() => props.buttonHandler('minus', product.id, product.price)} className="btn-type-1 btn-minus">-</button>
-                            <div className="input-cart"><span>{props.renderInput(product.id)}</span></div>
+                            <div className="input-cart">
+                                <span className="px-0">{props.renderInput(product.id)}</span>
+                            </div>
                             <button onClick={() => props.buttonHandler('plus', product.id, product.price)} className="btn-type-1 btn-plus">+</button>
                         </div>
                         :

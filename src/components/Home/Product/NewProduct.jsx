@@ -13,23 +13,25 @@ const NewProduct = (props) => {
                         {/* <p style={{fontSize: "14px"}} className="text-truncate text-muted">{product.unit}</p> */}
                         {product.discount ? 
                         <div style={{height: "80px", display: "grid"}}>
-                            <span style={{textDecoration: "line-through", height: "0"}}>Rp. {product.price.toLocaleString('id')}</span>
-                            <span style={{fontSize: "16px", top: "3rem"}} className="pl-1 text-muted">Rp. {(product.price - (product.price * product.discount/100)).toLocaleString('id')}<small>/{product.unit}</small></span>                     
+                            <span className="px-0" style={{textDecoration: "line-through", height: "0"}}>Rp. {product.price.toLocaleString('id')}</span>
+                            <span style={{fontSize: "16px", top: "3rem"}} className="px-0 text-muted">Rp. {(product.price - (product.price * product.discount/100)).toLocaleString('id')}<small>/{product.unit}</small></span>                     
                         </div>
                         :
                         <div style={{height: "80px"}}>
-                            <p>Rp. {product.price.toLocaleString('id')}</p>
+                            <span className="px-0">Rp. {product.price.toLocaleString('id')}<small>/{product.unit}</small></span>
                         </div>
                         }
 
                         {props.renderInput(product.id) ?
                         <div id={`btn-cart${product.id}`} className="text-center">
                             <button onClick={() => props.buttonHandler('minus', product.id, product.price)} className="btn-type-1 btn-minus">-</button>
-                            <div className="input-cart"><span>{props.renderInput(product.id)}</span></div>
+                            <div className="input-cart">
+                                <span className="px-0">{props.renderInput(product.id)}</span>
+                            </div>
                             <button onClick={() => props.buttonHandler('plus', product.id, product.price)} className="btn-type-1 btn-plus">+</button>
                         </div>
                         :
-                        <button onClick={() => props.addCartHandler(product.id, product.name, product.price, product.imgUrl)} 
+                        <button onClick={() => props.addCartHandler(product.id, product.name, product.price, product.image, product.unit, product.discount)} 
                         id={`btn-buy${product.id}`}
                         className="btn btn-success form-control">Beli</button>
                         }

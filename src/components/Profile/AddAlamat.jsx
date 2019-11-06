@@ -8,7 +8,13 @@ const AddAlamat = ({ show, setShow, id }) => {
 
     const city = ['Jakarta Selatan', 'Jakarta Pusat', 'Jakarta Timur', 'Jakarta Utara', 'Jakarta Barat', 'Kepulauan Seribu']
 
-    const dataHandler = (cond, value) => setData({...data, [cond]: value})
+    const dataHandler = (cond, value, number) => {
+        if (!number) setData({...data, [cond]: value})
+        else {
+            if (!isNaN(parseInt(value))) setData({...data, [cond]: value}) 
+            else setData({...data, [cond]: ''})
+        }
+    }
 
     const [ data, setData ] = useState({
         penerima: '',
@@ -51,7 +57,7 @@ const AddAlamat = ({ show, setShow, id }) => {
                                 <label htmlFor="nomerHp">Nomer Hp</label>
                                 <div className="col-md-10 d-inline-flex pl-0 pr-0">
                                     <span className="pl-0 my-auto text-muted">+62</span>
-                                    <input className="w-100" value={isNaN(data.nomerHp)? '' : data.nomerHp} onChange={e => dataHandler('nomerHp', parseInt(e.target.value))} id="nomerHp" type="text"/>
+                                    <input className="w-100" value={data.nomerHp} onChange={e => dataHandler('nomerHp', e.target.value, true)} id="nomerHp" type="text"/>
                                 </div>
                             </div>
                         </div>

@@ -78,14 +78,19 @@
 }
 
 .cart-image {
+    position: relative;
     height: 76px;
     width: 100px;
+    overflow: hidden;
 }
 
 .cart-image img {
-    height: 100%;
-    width: 100px;
-    border-radius: 5px;
+    height: auto;
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%) scale(0.9);
 }
 
 .cart-detail {
@@ -207,7 +212,8 @@
 
 .cart-checkout-price {
     display: flex;
-    width: 90px;
+    position: absolute;
+    right: 30%;
 }
 
 .btn-checkout {

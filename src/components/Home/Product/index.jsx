@@ -6,6 +6,7 @@ import '../Style/Products.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { addToCart, cartHandler } from '../../../actions/actionCart'
 import Cookies from 'universal-cookie'
+import moment from '../../../../../my-api/node_modules/moment/moment'
 const API = 'http://localhost:9000/'
 // import moment from 'moment'
 const cookies = new Cookies()
@@ -19,8 +20,10 @@ const Product = (props) => {
 
     const dispatch = useDispatch()
 
-    const addCartHandler = (id, name, price, img) => {
-        dispatch(addToCart(id, name, price, img))
+    const addCartHandler = (id, name, price, img, unit, discount) => {
+        console.log(unit)
+        console.log(discount)
+        dispatch(addToCart(id, name, price, img, unit, discount))
     }
 
     const buttonHandler = (cond ,id, price) => {
@@ -47,11 +50,8 @@ const Product = (props) => {
             mounted.current = true
             return;
         }
-        cookies.set('cart', { product: quantity, total }, { path: '/' })
-        console.log(cookies.get('cart'))
+        cookies.set('cart', { product: quantity, total }, { path: '/', expires: new Date(moment().add(8, 'h').format('YYYY-MM-DDTkk:mm:ss.SSS')+ 'Z') })
     }, [quantity, total])
-
-    console.log(props)
 
     return (
         <Fragment>
@@ -67,7 +67,7 @@ const Product = (props) => {
             <span className="card-title-type2">Lihat Semua ></span>
             <div className="container-card-type1">
                 <NewProduct products={props.newestProducts} 
-                addCartHandler={(id, name, price, img) => addCartHandler(id, name, price, img)} 
+                addCartHandler={(id, name, price, img, unit, discount) => addCartHandler(id, name, price, img, unit, discount)} 
                 buttonHandler={(cond, id, price) => buttonHandler(cond, id, price)} 
                 renderInput={id => renderInput(id)}
                 API={ API }/> 
@@ -75,7 +75,7 @@ const Product = (props) => {
             <span style={{fontSize: "28px"}} className="mt-5">Semua Produk</span>
             <div className="row mt-2">
                 <AllProduct products={props.allProducts} 
-                addCartHandler={(id, name, price, img) => addCartHandler(id, name, price, img)} 
+                addCartHandler={(id, name, price, img, unit, discount) => addCartHandler(id, name, price, img, unit, discount)} 
                 buttonHandler={(cond, id, price) => buttonHandler(cond, id, price)} 
                 renderInput={id => renderInput(id)}
                 API={ API }/>
