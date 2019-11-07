@@ -3,6 +3,8 @@ import moment from 'moment'
 import './style/TransactionList.css'
 import API from '../../services'
 import { Modal } from 'react-bootstrap'
+import UploadPaymentProof from './UploadPaymentProof'
+import TransactionDetail from './TransactionDetail'
 // import { Popover, Pane, Position, Button, Image, Dialog } from 'evergreen-ui'
 
 const TransactionList = ({ id }) => {
@@ -10,6 +12,8 @@ const TransactionList = ({ id }) => {
     const [data, setData] = useState('')
     const [loading, setLoading] = useState(true)
     const [showIdx, setShowIdx] = useState(null)
+    const [showDetail, setShowDetail] = useState(null)
+    const [uploadPayment, setUploadPayment] = useState(null)
 
     useEffect(() => {
         API.getTransactionList({ id })
@@ -18,6 +22,8 @@ const TransactionList = ({ id }) => {
             setLoading(false)
         })
     }, [])
+
+    console.log(data)
 
     const renderProductList = (products, index) => {
             return (
@@ -110,39 +116,39 @@ const TransactionList = ({ id }) => {
             if (val.productDiscount) price += (val.productPrice - (val.productPrice * val.productDiscount/100)) * val.productQty
             else price += val.productPrice * val.productQty
         })
-        return price.toLocaleString('id')
+        return (price + 10000).toLocaleString('id')
     }
 
-    const renderModalList = (products) => {
-        let render = products.map((product, index) => {
-            return (
-                <Fragment key={index}>
-                    <div className="d-flex">
-                        <div className="col-5 px-0 d-inline-flex">
-                            <div style={{ width: "55px", flexDirection: "column", display: "flex", justifyContent: "center", overflow: "hidden" }}>
-                                <img className="w-100" src={'http://localhost:9000/' + product.productImage} alt="gambar"/>
-                            </div>
-                            <div style={{ display: "grid" }} className="pl-1">
-                                <span className="px-0">{product.productName}</span>
-                                <span className="px-0 text-muted"
-                                style={{ fontSize: "smaller" }}
-                                >{product.productUnit + ' x ' + 'Rp. ' + product.productPrice.toLocaleString('id')}</span>
-                            </div>
-                        </div>
-                        <div className="col-4 px-0 d-flex text-center"
-                        style={{ flexDirection: "column", justifyContent: "center" }}>
-                            <span>{product.productQty}</span>
-                        </div>
-                        <div className="col-3 px-0 d-flex text-center"
-                        style={{ flexDirection: "column", justifyContent: "center" }}>
-                            <span>Rp. {(product.productQty*product.productPrice).toLocaleString('id')}</span>
-                        </div>
-                    </div>
-                </Fragment>
-            )
-        })
-        return render
-    }
+    // const renderModalList = (products) => {
+    //     let render = products.map((product, index) => {
+    //         return (
+    //             <Fragment key={index}>
+    //                 <div className="d-flex">
+    //                     <div className="col-5 px-0 d-inline-flex">
+    //                         <div style={{ width: "55px", flexDirection: "column", display: "flex", justifyContent: "center", overflow: "hidden" }}>
+    //                             <img className="w-100" src={'http://localhost:9000/' + product.productImage} alt="gambar"/>
+    //                         </div>
+    //                         <div style={{ display: "grid" }} className="pl-1">
+    //                             <span className="px-0">{product.productName}</span>
+    //                             <span className="px-0 text-muted"
+    //                             style={{ fontSize: "smaller" }}
+    //                             >{product.productUnit + ' x ' + 'Rp. ' + product.productPrice.toLocaleString('id')}</span>
+    //                         </div>
+    //                     </div>
+    //                     <div className="col-4 px-0 d-flex text-center"
+    //                     style={{ flexDirection: "column", justifyContent: "center" }}>
+    //                         <span>{product.productQty}</span>
+    //                     </div>
+    //                     <div className="col-3 px-0 d-flex text-center"
+    //                     style={{ flexDirection: "column", justifyContent: "center" }}>
+    //                         <span>Rp. {(product.productQty*product.productPrice).toLocaleString('id')}</span>
+    //                     </div>
+    //                 </div>
+    //             </Fragment>
+    //         )
+    //     })
+    //     return render
+    // }
 
     const renderTransactionList = () => {
         let x = data.map((val, index) => {
@@ -150,7 +156,7 @@ const TransactionList = ({ id }) => {
                 <li key={ index } className="card mb-2">
                     <div>
                         <div className="p-1" style={{ borderBottom: "1px solid rgba(0,0,0,.125)", backgroundColor: "green" }}>
-                            <span style={{ color: "white" }}>{moment(val.created_at).format('D MMM YYYY')}</span>
+                            <span style={{ color: "white" }}>{moment(val.created_at).format('D MMM YYYY kk:mm')}</span>
                         </div>
                         <div style={{ borderBottom: "1px solid rgba(0,0,0,.125)" }}>
                             <div className="w-100 d-inline-flex" style={{ height: "80px" }}>
@@ -160,7 +166,7 @@ const TransactionList = ({ id }) => {
                                 </div>
                                 <div className="col-4 my-auto" style={{ borderRight: "1px solid rgba(0,0,0,.125)" }}>
                                     <span className="px-0">Status</span>
-                                    <p className="mb-0">Menunggu Pembayaran</p>
+                                    <p className="mb-0">{val.status}</p>
                                 </div>
                                 <div className="col-4 my-auto">
                                     <span className="px-0">Total Belanja</span>
@@ -171,7 +177,7 @@ const TransactionList = ({ id }) => {
                         {renderProductList(val.products, index)}
                         <div className="text-center py-2" style={{ borderBottom: "1px solid rgba(0,0,0,.125)" }}>
                             {
-                                showIdx !== null ?
+                                showIdx == index ?
                                 <button style={{ color: "green" }} className="btn-transaction-detail" onClick={ () => setShowIdx(null) }>
                                     { 
                                         val.products.length > 1 ?
@@ -192,11 +198,30 @@ const TransactionList = ({ id }) => {
                             </button>
                             }
                         </div>
-                        <div className="position-relative" style={{ backgroundColor: "green" }}>
-                                <button style={{ color: "white" }} className="btn">Input Bukti Pembayaran</button>
-                                <span style={{ color: "white" }} className="btn">Preview</span>
-                                <button style={{ color: "white" }} className="btn">Selesai</button>
+                        <div className="d-flex" style={{ backgroundColor: "green" }}>
+                                <button style={{ color: "white", flex: "1", textAlign: "left" }} className="btn"
+                                onClick={ () => setShowDetail(index) }>Lihat Detail Pesanan</button>
+                                <button style={{ color: "white", flex: "1", textAlign: "right" }} className="btn"
+                                onClick={ () => setUploadPayment(index) }>Input Bukti Pembayaran</button>
                         </div>
+                        <UploadPaymentProof
+                        index={ index }
+                        uploadPayment={ uploadPayment } 
+                        setUploadPayment={ setUploadPayment }
+                        transactionId={ val.transactionId }
+                        id={ id }
+                        paymentProof={ val.paymentProof }/>
+                        <TransactionDetail
+                        setShowDetail={ setShowDetail }
+                        showDetail={ showDetail }
+                        index={ index }
+                        transactionId={ val.transactionId }
+                        created_at={ val.created_at }
+                        notes={ val.notes }
+                        address={ val.address }
+                        products={ val.products }
+                        />
+                        
                         {/* <Modal centered show={ showIdx == index } onHide={ () => setShowIdx(null) }>
                             <Modal.Header>
                                 <div style={{ display: "grid"}}>

@@ -131,7 +131,7 @@ const Navbar = ({ setLogin }) =>{
                     <div ref={ node } className="profile-dropdown">
                         <ul className="profile-dropdown-item">
                             <li style={{paddingTop: "10px"}}><a className="link" href="/dashboard">Dashboard</a></li> 
-                            <li><a href={`/profile/${id}`}>Profil</a></li>
+                            <li><a href={`/profile/${id}/biodata`}>Profil</a></li>
                             <li style={{paddingBottom: "5px"}} onClick={logoutHandler}>Keluar</li>
                         </ul>
                     </div>

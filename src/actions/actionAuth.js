@@ -62,6 +62,20 @@ export const isLogin = (id, fullName, email) => {
     )
 }
 
+export const changeBiodata = (id, fullName, email) => {
+    return dispatch => {
+        cookies.set('user', { id, fullName, email }, { path: '/' })
+        dispatch({
+            type: type.LOGIN_SUCCESS,
+            payload: {
+                id,
+                fullName,
+                email
+            }
+        })
+    }
+}
+
 export const onLogout = () => {
     return (
         {

@@ -10,10 +10,29 @@ const ProductManagement = () => {
     const [ loading, setLoading ] = useState(true)
     const [ categories, setCategories ] = useState([])
     const [ addProduct, setAddProduct ] = useState(false)
+    const [ showIdx, setShowIdx ] = useState(null)
+    const [ selected, setSelected ] = useState(null)
 
     const getProducts = () => {
-        API.getProductsDataAPI()
-        .then(res => setProducts(res.data.allProducts))
+        API.getProductDataDashboard()
+        .then(res => {
+            // console.log(res)
+            setProducts(res.data)
+        })
+    }
+    const editHandler = (val, index) => {
+        setSelected({
+            ...selected,
+            image: val.image,
+            name: val.name,
+            price: val.price,
+            category: val.category,
+            stock: val.stock, 
+            satuan: val.unit,
+            discount: val.discount
+        })
+        setShowIdx(index)
+        console.log(val)
     }
 
     useEffect(() => {
@@ -43,50 +62,63 @@ const ProductManagement = () => {
     const renderProduct = () => {
         let render = products.map( (product, index) => {
             return (
-                <tr key={product.id}>
+                <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>
-                    <Popover
-                    content={
-                        <Pane
-                        width={240}
-                        height={200}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        flexDirection="column"
+                    {
+                        showIdx === index ?
+                        <>
+                        <td><input style={{ width: "100px" }} type="text" value={selected.image}/></td>
+                        <td><input style={{ width: "100px" }} type="text" value={selected.name}/></td>
+                        <td><input style={{ width: "100px" }} type="text" value={selected.price}/></td>
+                        <td><input style={{ width: "100px" }} type="text" value={selected.category}/></td>
+                        <td><input style={{ width: "100px" }} type="text" value={selected.stock}/></td>
+                        <td><input style={{ width: "100px" }} type="text" value={selected.satuan}/></td>
+                        <td><input style={{ width: "100px" }} type="text" value={selected.discount}/></td>
+                        <td><button onClick={ () => {
+                            setSelected(null)
+                            setShowIdx(null)
+                        } }>cancel</button></td>
+                        </>
+                        :
+                    <>
+                        <td>
+                        <Popover
+                        content={
+                            <Pane
+                            width={240}
+                            height={200}
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            flexDirection="column"
+                            >
+                            <Image style={{width: "100%", height: "auto"}} src={ 'http://localhost:9000/' + product.image }></Image>
+                            </Pane>    
+                        }
+                        position={Position.RIGHT}
                         >
-                        <Image style={{width: "100%", height: "auto"}} src={ 'http://localhost:9000/' + product.image }></Image>
-                        </Pane>    
+                        <Button intent="none" appearance="minimal">See Image</Button>
+                        </Popover>
+                        </td>
+                        <td>
+                            <span>{product.name}</span>
+                        </td>
+                        <td>{product.price.toLocaleString('id')}</td>
+                        <td>{product.category}</td>
+                        <td>{product.stock}</td>
+                        <td>{product.unit}</td>
+                        <td>{product.discAvailable === 'no_disc' ? 'Inactive' : 'Discout ' + product.discAvailable.split('_')[1] + '%'}</td>
+                        <td>
+                            <button onClick={ () => editHandler(product, index) } className="btn btn-warning mr-2">Edit</button>
+                            <button className="btn btn-danger">Delete</button>
+                        </td>
+                    </>
                     }
-                    position={Position.RIGHT}
-                    >
-                    <Button intent="none" appearance="minimal">See Image</Button>
-                    </Popover>
-                        {/* <div className="img-table">
-                            <img className="img-items" alt="gambar" src={ 'http://localhost:9000/' + product.image } />
-                        </div> */}
-                    </td>
-                    <td>
-                        <span>{product.name}</span>
-                    </td>
-                    <td>{product.price.toLocaleString('id')}</td>
-                    <td>{product.category}</td>
-                    <td>{product.stock}</td>
-                    <td>{product.unit}</td>
-                    <td>{product.active ? product.active : 'Inactive'}</td>
-                    <td>{product.discAvailable === 'no_disc' ? 'Inactive' : 'Discout ' + product.discAvailable.split('_')[1] + '%'}</td>
-                    <td>
-                        <button className="btn btn-warning mr-2">Edit</button>
-                        <button className="btn btn-danger">Delete</button>
-                    </td>
                 </tr>
             )
         })
         return render
     }
-
-    console.log(products)
 
     return (
         <Fragment>
@@ -114,7 +146,7 @@ const ProductManagement = () => {
                             <th>Category</th>
                             <th>Stock</th>
                             <th>Satuan</th>
-                            <th>Aktif</th>
+                            {/* <th>Aktif</th> */}
                             <th>Discount</th>
                             <th>Action</th>
                         </tr>

@@ -1,6 +1,6 @@
 import Get from './Get'
 import Post from './Post'
-
+import Patch from './Patch'
 
 // GET
 const getProductsData = () => Get('products', false)
@@ -10,8 +10,11 @@ const getAllCustomers = () => Get('auth/customers', true)
 const getAddress = (input) => Get('user/address', true, input)
 const getTransactionsDetail = (input) => Get('transaction/gettransactionsdetail', true, input)
 const getTransactionList = (input) => Get('transaction/gettransactionslist', true, input)
-// const
+const getProductDataDashboard = () => Get('product/getproductsdashboard', true)
 
+// PATCH
+const uploadPaymentProof = (data) => Patch('transaction/uploadpayment', true, data)
+const changeBiodata = (data) => Patch('user/changebiodata', true, data)
 
 // Post
 const registerUser = (data) => Post('auth/register', true, data)
@@ -32,7 +35,10 @@ const API = {
     addTranscation,
     addTranscationDetail,
     getTransactionsDetail,
-    getTransactionList
+    getTransactionList,
+    uploadPaymentProof,
+    changeBiodata,
+    getProductDataDashboard
 }
 
 export default API

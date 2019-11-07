@@ -27,7 +27,6 @@ const Dashboard = () => {
                             }
                         </ol>
                     </div>
-                    
                         <Route path="/dashboard/productmanagement" component={ProductManagement} />
                         <Route path="/dashboard/customers" component={Customers}/>
                     </div>
