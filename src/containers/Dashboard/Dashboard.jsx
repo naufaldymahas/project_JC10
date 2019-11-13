@@ -3,10 +3,13 @@ import { Route } from 'react-router-dom'
 import Sidebar from '../../components/Dashboard/Sidebar'
 import ProductManagement from '../../components/Dashboard/ProductManagement'
 import Customers from '../../components/Dashboard/Customers'
+import Orders from '../../components/Dashboard/Orders'
+import Reports from '../../components/Dashboard/Reports'
 import './Dashboard.css'
 
-const Dashboard = () => {
+const Dashboard = (props) => {
 
+    console.log(props.location.pathname.split('/')[2])
 
     const [ anu, setAnu ] = useState('')
 
@@ -20,15 +23,15 @@ const Dashboard = () => {
                             <li className="breadcrumb-item active" aria-current="page">
                                 <a className="breadcrumb-link" href="/dashboard">Dashboard</a>
                             </li>
-                            {!anu ? null : 
                             <li className="breadcrumb-item">
-                                <span className="breadcrumb-link">{anu}</span>
+                                <span className="breadcrumb-link">{props.location.pathname.split('/')[2]}</span>
                             </li>
-                            }
                         </ol>
                     </div>
+                        <Route path="/dashboard/orders" component={Orders}/>
                         <Route path="/dashboard/productmanagement" component={ProductManagement} />
                         <Route path="/dashboard/customers" component={Customers}/>
+                        <Route path="/dashboard/reports" component={Reports}/>
                     </div>
                 </div>
             </div>

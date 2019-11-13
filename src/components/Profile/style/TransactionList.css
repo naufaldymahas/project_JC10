@@ -13,3 +13,7 @@
     border: none;
     color: green;
 }
+
+.s-link:hover {
+    text-decoration: none;
+}

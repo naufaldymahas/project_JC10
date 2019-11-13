@@ -114,7 +114,7 @@ const Identity = ({ fullName, address, data, setData, inputHandler }) => {
                                         <label className="text-muted" style={{fontSize: "15px"}} htmlFor="nomerHp">Nomer Hp</label>
                                         <div className="col-md-12 d-inline-flex pl-0">
                                             <span className="pl-0 my-auto text-muted">+62</span>
-                                            <input className="col-10 form-control" onChange={ e => inputHandler('nomerHp', parseInt(e.target.value), true) } value={data.nomerHp} id="nomerHp" type="text"/>
+                                            <input className="col-10 form-control" onChange={ e => inputHandler('nomerHp', e.target.value.replace(/\D/,''), true) } value={data.nomerHp} id="nomerHp" type="text"/>
                                         </div>
                                     </div>
                                 </div>
@@ -164,7 +164,7 @@ const Identity = ({ fullName, address, data, setData, inputHandler }) => {
                                         <input className="custom-select" 
                                         onChange={ e => setData({...data, tanggalPengiriman: e.target.value})} 
                                         value={ data.tanggal }
-                                        min={ moment().year() + '-' + (moment().month()+1) + '-' + moment().date() } type="date" id="tanggal"/>
+                                        min={ moment().year() + '-' + (moment().month()+1) + '-' + (moment().date()+1) } type="date" id="tanggal"/>
                                     </div>
                                     <div>
                                         <div>

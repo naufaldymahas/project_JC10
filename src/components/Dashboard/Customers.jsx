@@ -1,5 +1,6 @@
 import React, { useState, Fragment, useEffect } from 'react'
 import API from '../../services'
+import moment from '../../../../my-api/node_modules/moment/moment'
 
 const Customers = () => {
 
@@ -25,11 +26,15 @@ const Customers = () => {
                     <td>{ index + 1 }</td>
                     <td>{ user.fullName }</td>
                     <td>{ user.email }</td>
+                    <td>{ user.totalTransaction }</td>
+                    <td>{ moment(user.lastLogin).format('YYYY-MM-DD kk:mm:ss') }</td>
                 </tr>
             )
         } )
         return render
     }
+
+    console.log(users)
 
     return (
        <Fragment>
@@ -52,6 +57,8 @@ const Customers = () => {
                             <th>No</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Total Transaction</th>
+                            <th>Last Login</th>
                         </tr>
                     </thead>
                     <tbody>

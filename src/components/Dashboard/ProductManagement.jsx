@@ -3,37 +3,49 @@ import API from '../../services'
 import AddProduct from './AddProduct'
 import { Popover, Pane, Position, Button, Image } from 'evergreen-ui'
 import './style/ProductManagement.css'
+import { Modal } from 'react-bootstrap'
+import Swal from 'sweetalert2'
+import AddDiscount from './AddDiscount'
 
 const ProductManagement = () => {
 
-    const [ products, setProducts ] = useState([])
+    const [ products, setProducts ] = useState()
     const [ loading, setLoading ] = useState(true)
     const [ categories, setCategories ] = useState([])
     const [ addProduct, setAddProduct ] = useState(false)
     const [ showIdx, setShowIdx ] = useState(null)
     const [ selected, setSelected ] = useState(null)
+    const [ preview, setPreview ] = useState(null)
+    const [ modal, setModal ] = useState(null)
+    const [ newData, setNewData ] = useState(false)
+    const [ addDiscount, setAddDiscount ] = useState(false)
 
     const getProducts = () => {
         API.getProductDataDashboard()
         .then(res => {
-            // console.log(res)
+            console.log(res.data)
             setProducts(res.data)
         })
     }
     const editHandler = (val, index) => {
+        console.log(val)
         setSelected({
             ...selected,
+            id: val.idProduct,
             image: val.image,
             name: val.name,
             price: val.price,
             category: val.category,
             stock: val.stock, 
             satuan: val.unit,
-            discount: val.discount
+            discount: val.discount,
+            description: val.description
         })
         setShowIdx(index)
-        console.log(val)
     }
+
+    console.log(selected)
+
 
     useEffect(() => {
         getProducts()
@@ -50,7 +62,7 @@ const ProductManagement = () => {
             return;
         }
         let categories = []
-        products.map(product => {
+        products.result.map(product => {
             if (!categories.includes(product.category)) {
                 categories.push(product.category)
             }
@@ -59,25 +71,108 @@ const ProductManagement = () => {
         setCategories(categories)
     }, [products])
 
+    const mounted1 = useRef(false)
+
+    useEffect(() => {
+        if (!mounted1.current) {
+            mounted1.current = true
+            return
+        }
+        getProducts()
+    }, [newData])
+
+    const buttonEditHandler = (cond) => {
+        if (cond === 'cancel') {
+            setSelected(null)
+            setShowIdx(null)
+        } else {
+            let fd = new FormData()
+            fd.append('product', selected.image)
+            fd.append('data', JSON.stringify(selected))
+            API.updateProduct(fd)
+            .then(res => {
+                if (res.data) {
+                    Swal.fire({
+                        type: "success",
+                        title: res.data
+                    })
+                }
+                setShowIdx(null)
+                setSelected(null)
+                getProducts()
+            })
+        }
+    }
+
+    const fileBtn = useRef('fileBtn')
+
+    const fileBtnClick = () => fileBtn.current.click() 
+
+    const uploadHandler = e => {
+        setSelected({...selected, image: e})
+        setPreview(URL.createObjectURL(e))
+    }
+
     const renderProduct = () => {
-        let render = products.map( (product, index) => {
+        let render = products.result.map( (product, index) => {
             return (
                 <tr key={index}>
                     <td>{index + 1}</td>
                     {
                         showIdx === index ?
                         <>
-                        <td><input style={{ width: "100px" }} type="text" value={selected.image}/></td>
-                        <td><input style={{ width: "100px" }} type="text" value={selected.name}/></td>
-                        <td><input style={{ width: "100px" }} type="text" value={selected.price}/></td>
-                        <td><input style={{ width: "100px" }} type="text" value={selected.category}/></td>
-                        <td><input style={{ width: "100px" }} type="text" value={selected.stock}/></td>
-                        <td><input style={{ width: "100px" }} type="text" value={selected.satuan}/></td>
-                        <td><input style={{ width: "100px" }} type="text" value={selected.discount}/></td>
-                        <td><button onClick={ () => {
-                            setSelected(null)
-                            setShowIdx(null)
-                        } }>cancel</button></td>
+                        <td>
+                            <input ref={ fileBtn } style={{ display: "none" }} type="file" onChange={ e => uploadHandler(e.target.files[0]) }/>
+                            <button className="btn btn-outline-info p-1" onClick={ fileBtnClick }>
+                                Input File
+                            </button>
+                            {
+                                preview ? 
+                                <span style={{ color: "blue", cursor: "pointer" }} onClick={() => window.open(preview)}>Preview</span>
+                                :
+                                <span style={{ color: "blue", cursor: "pointer" }} onClick={() => window.open('http://localhost:9000/' + selected.image)}>Preview</span>
+                            }
+                        </td>
+                        <td><input style={{ width: "100px" }} type="text" onChange={e => setSelected({...selected, name: e.target.value})} value={selected.name}/></td>
+                        <td><input style={{ width: "100px" }} type="text" onChange={e => setSelected({...selected, price: e.target.value})} value={selected.price}/></td>
+                        <td>
+                            <select value={selected.category} onChange={ e => setSelected({...selected, category: e.target.value}) }>
+                                {categories.map(category => (
+                                    <option key={category} value={category}>{category}</option>
+                                ))}
+                            </select>
+                        </td>
+                        <td><input style={{ width: "100px" }} type="text" onChange={e => setSelected({...selected, stock: e.target.value})} value={selected.stock}/></td>
+                        <td><input style={{ width: "100px" }} type="text" onChange={e => setSelected({...selected, satuan: e.target.value})} value={selected.satuan}/></td>
+                        <td>
+                            <button className="btn btn-info" onClick={ () => setModal(index) }>Edit Description</button>
+                            <Modal
+                            show={index === modal}
+                            onHide={() => setModal(null)}
+                            >
+                                <Modal.Header>
+                                    Description
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <textarea cols="40" rows="10" value={selected.description} onChange={ e => setSelected({...selected, description: e.target.value}) }/>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <button className="btn btn-outline-danger" onClick={ () => setModal(null) }>Close</button>
+                                </Modal.Footer>
+                            </Modal>   
+                        </td>
+                        <td>
+                            <select value={selected.discount} onChange={ e => setSelected({...selected, discount: e.target.value}) }>
+                                {products.discount.map(disc => (
+                                    <option key={disc.id} value={disc.id}>{disc.id}</option>
+                                ))}
+                            </select>
+                        </td>
+                        {/* <input style={{ width: "100px" }} type="text" onChange={e => setSelected({...selected, discount: e.target.value})} value={selected.discount}/> */}
+                        <td>
+                            <button className="btn btn-outline-warning" onClick={ () => buttonEditHandler('cancel') }>cancel</button>
+                            <button className="btn btn-outline-success" onClick={ () => buttonEditHandler('save') }>Save</button>
+                        </td>
                         </>
                         :
                     <>
@@ -107,6 +202,23 @@ const ProductManagement = () => {
                         <td>{product.category}</td>
                         <td>{product.stock}</td>
                         <td>{product.unit}</td>
+                        <td>
+                            <button className="btn btn-info" onClick={ () => setModal(product.idProduct) }>Preview Description</button>
+                            <Modal
+                            show={product.idProduct === modal}
+                            onHide={() => setModal(null)}
+                            >
+                                <Modal.Header>
+                                    Description
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <textarea readOnly cols="40" rows="10" value={product.description}/>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <button className="btn btn-outline-danger" onClick={ () => setModal(null) }>Close</button>
+                                </Modal.Footer>
+                            </Modal>
+                        </td>
                         <td>{product.discAvailable === 'no_disc' ? 'Inactive' : 'Discout ' + product.discAvailable.split('_')[1] + '%'}</td>
                         <td>
                             <button onClick={ () => editHandler(product, index) } className="btn btn-warning mr-2">Edit</button>
@@ -122,8 +234,9 @@ const ProductManagement = () => {
 
     return (
         <Fragment>
-            <div>
+            <div className="d-inline-flex">
                 <span style={{fontSize: "30px"}}>Products</span>
+                <button onClick={ () => setAddDiscount(true) } className="btn-product-add">Add Discount</button>
                 <button onClick={ () => setAddProduct(true) } className="btn-product-add">Add Product</button>
             </div>
             <div className="mt-3">
@@ -135,32 +248,36 @@ const ProductManagement = () => {
                 </div>
                 
                 : 
-
-                <table className="table text-center">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Stock</th>
-                            <th>Satuan</th>
-                            {/* <th>Aktif</th> */}
-                            <th>Discount</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {renderProduct()}
-                    </tbody>
-                </table>
+                 <table className="table text-center">
+                     <thead>
+                         <tr>
+                             <th>No</th>
+                             <th>Image</th>
+                             <th>Name</th>
+                             <th>Price</th>
+                             <th>Category</th>
+                             <th>Stock</th>
+                             <th>Satuan</th>
+                             <th>Description</th>
+                             <th>Discount</th>
+                             <th>Action</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         {renderProduct()}
+                     </tbody>
+                 </table>
                 }
                 
             </div>
         
-            { addProduct ? <AddProduct categories={ categories } setAddProduct={ setAddProduct } /> : null}
-
+            { addProduct ? <AddProduct setNewData={ setNewData } products={ products }  categories={ categories } setAddProduct={ setAddProduct } /> : null}
+            {
+                products ?
+                <AddDiscount discount={products.discount} addDiscount={ addDiscount } setAddDiscount={ setAddDiscount }/>
+                :
+                null
+            }
         </Fragment>
     )
 }

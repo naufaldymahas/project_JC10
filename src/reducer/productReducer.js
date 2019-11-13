@@ -3,10 +3,13 @@ const init = {
     total: 0,
 }
 
-var remove, product, newValue, newTotal;
+var remove, product, newValue, newTotal, clearProduct, clearTotal, totalCart;
 
 const productReducer = (state = init, action) => {
     switch (action.type) {
+        case 'LOGIN_CART':
+            console.log(action.payload)
+            return {...state, addedProduct: action.payload.products, total: action.payload.total}
         case 'COOKIE_PRODUCT':
             return {...state, addedProduct: action.payload.product, total: action.payload.total}
         case 'ADD_ORDER':
@@ -69,6 +72,10 @@ const productReducer = (state = init, action) => {
             product = state.addedProduct.find(product => product.id === action.payload.id)
             newTotal = state.total - (product.productPrice * product.quantity)
             return {...state, addedProduct: remove, total: newTotal}
+        case 'CLEAR_PRODUCT':
+            clearProduct = []
+            clearTotal= 0
+            return {...state, addedProduct: clearProduct, total: clearTotal}
         default:
             return state
     }

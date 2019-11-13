@@ -6,9 +6,10 @@ const CheckoutCart = ({ carts, voucher, setVoucher }) => {
 
     const renderTotal = () => {
         let total = 0
+        console.log(carts)
         carts.addedProduct.forEach(val => {
-            if (val.productDiscount) total += val.productPrice - (val.productPrice * val.productDiscount/100)
-            else total += val.productPrice
+            if (val.productDiscount) total += (val.productPrice - (val.productPrice * val.productDiscount/100)) * val.quantity
+            else total += val.productPrice * val.quantity
         })
         return total
     }
@@ -59,16 +60,6 @@ const CheckoutCart = ({ carts, voucher, setVoucher }) => {
                     ))
                 }
                 <div className="mt-3">
-                    <span className="input-voucher" onClick={() => setVoucher(!voucher)} style={{borderBottom: "1px dashed"}}>Punya Voucher Kode?</span>
-                    {
-                        voucher ?
-                        <div className="col-md-4 p-0 mt-1 d-flex" style={{height: "30px"}}>
-                            <input autoFocus className="form-control h-100" type="text"/>
-                            <button className="btn btn-info ml-2 p-2" style={{lineHeight: 0}}>Submit</button>
-                        </div>
-                        :
-                        null
-                    }
                     <div className="mt-2 pb-4">
                        <div className="position-relative">
                             <span className="p-0 text-muted">Biaya Kirim</span>

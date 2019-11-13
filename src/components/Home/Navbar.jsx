@@ -1,34 +1,26 @@
-import React, { Fragment, useState, useRef, useEffect } from 'react'
+import React, { Fragment, useState, useRef } from 'react'
 import './Style/Navbar.css'
 import { useDispatch, useSelector } from 'react-redux'
 import Cart from './Cart'
-import { cartHandler as inputHandler, removeProduct } from '../../actions/actionCart'
+import { cartHandler as inputHandler, removeProduct, clearProduct } from '../../actions/actionCart'
 import { onLogout } from '../../actions/actionAuth'
-import Cookies from 'universal-cookie'
-import DropdownButton from 'react-bootstrap/DropdownButton'
-import Dropdown from 'react-bootstrap/Dropdown'
 
-const cookies = new Cookies()
+const Navbar = ({ setLogin, search, setSearch, searchHandler, products }) =>{
 
-const Navbar = ({ setLogin }) =>{
-
-    const { quantity, total, user, id } = useSelector( state => ({
+    const { quantity, total, user, id, role } = useSelector( state => ({
         quantity: state.productReducer.addedProduct,
         total: state.productReducer.total,
         user: state.authReducer.fullName,
-        id: state.authReducer.id
+        id: state.authReducer.id,
+        role: state.authReducer.role
     }) )
 
     const [ isDropdown, setIsDropdown ] = useState(0)
 
     const dispatch = useDispatch()
 
-    const buttonHandler = (cond ,id, price) => {
-        if (cond === 'plus') {
-            dispatch(inputHandler(cond, id, price))
-        } else {
-            dispatch(inputHandler(cond, id, price))
-        }
+    const buttonHandler = (cond ,productId, price, quantity) => {
+        dispatch(inputHandler(cond, productId, price, quantity, id))
     }
 
     const cartHandler = (cond) => {
@@ -53,8 +45,8 @@ const Navbar = ({ setLogin }) =>{
         return Qty
     }
 
-    const removeHandler = (id) => {
-        dispatch(removeProduct(id))
+    const removeHandler = (productId) => {
+        dispatch(removeProduct(productId, id))
     }
 
     const dropdownHandler = () => {
@@ -71,13 +63,12 @@ const Navbar = ({ setLogin }) =>{
     const logoutHandler = () => {
         setLogin(0)
         setIsDropdown(0)
+        dispatch(clearProduct())
         dispatch(onLogout())
-        cookies.remove('user')
     }
 
     const outsideHandler = e => {
         if (node.current.contains(e.target)) {
-            // setIsDropdown(1)
             return
         } else {
             setIsDropdown(0)
@@ -86,51 +77,49 @@ const Navbar = ({ setLogin }) =>{
 
     const node = useRef()
 
-    // useEffect(() => {
-        
-    //     if (isDropdown) document.addEventListener('mousedown', outsideHandler)
-    //     else document.removeEventListener('mousedown', outsideHandler)
-
-    //     return () => {
-    //         document.removeEventListener('mousedown', outsideHandler)
-    //     }
-    // }, [isDropdown])
-
     return (
         <Fragment>
             <Cart addedProduct={quantity} 
             cartHandler={value => cartHandler(value)} 
             quantity={renderInput()}
             total={total}
-            buttonHandler={(cond ,id, price) => buttonHandler(cond ,id, price)}
+            products={products}
+            buttonHandler={(cond ,productId, price, quantity) => buttonHandler(cond ,productId, price, quantity)}
             removeProduct={id => removeHandler(id)}/>
-            <div className="navbars">
-                <div className="navbar-items">
-                <span>ini Logo</span>
-                <a href="/" className="ml-3 item-link">Kategori</a>
-                    <div className="input-group-type1">
-                        <input type="text" className="input-color px-2" placeholder="Cari Produk"/>
-                        <button className="btn-type1">Search</button>
-                    </div>
+            <div className="row mx-0 py-2" style={{ borderBottom: "1px solid #cacaca" }}>
+                <a href="/" className="my-auto col-md-2 text-center" style={{ height: "35px" }}>
+                    <img className="h-100" src={require('../../assets/logo-02.png')} alt="logo"/>
+                </a>
+                <form onSubmit={ searchHandler } className="col-md-8 my-auto text-center">
+                    <input className="input-color" value={search} onChange={ e => setSearch(e.target.value) } type="text"/>
+                    <button className="btn-type1" onClick={ searchHandler } type="submit">Search</button>
+                </form>
+                    <div className="col-md-2 my-auto">
                     {
                         !user
                         ?
-                        <div className="items">
-                            <button onClick={() => setLogin(1)} className="masuk">Masuk</button>
-                            <a href="/register" className="daftar">Daftar</a>
-                        </div>
+                            <>
+                                <button className="masuk mr-2" onClick={() => setLogin(1)}>Masuk</button>
+                                <a className="daftar" href="/register">Daftar</a>
+                            </>
+                        
                         :
-                        <div ref={ node } onClick={dropdownHandler} className="profile">
-                            <button>{user} <i style={{fontSize: "14px"}} id="dropdown" className="fa fa-caret-left"></i></button>
-                        </div>
+                            <>
+                                <button onClick={dropdownHandler} className="profile">{user} <i style={{fontSize: "14px"}} id="dropdown" className="fa fa-caret-left"></i></button>
+                            </>
                     }
-                </div>
+                    </div>
                 {
                     isDropdown
                     ?
                     <div ref={ node } className="profile-dropdown">
                         <ul className="profile-dropdown-item">
-                            <li style={{paddingTop: "10px"}}><a className="link" href="/dashboard">Dashboard</a></li> 
+                            {
+                                role === "admin" ?
+                                <li style={{paddingTop: "10px"}}><a className="link" href="/dashboard">Dashboard</a></li> 
+                                :
+                                null
+                            }
                             <li><a href={`/profile/${id}/biodata`}>Profil</a></li>
                             <li style={{paddingBottom: "5px"}} onClick={logoutHandler}>Keluar</li>
                         </ul>

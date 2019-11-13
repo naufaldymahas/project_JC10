@@ -2,8 +2,7 @@ import React from 'react'
 import { Modal } from 'react-bootstrap'
 import moment from 'moment'
 
-const TransactionDetail = ({ setShowDetail, showDetail, index, transactionId, created_at, notes, address, products }) => {
-
+const TransactionDetail = ({ setShowDetail, showDetail, index, transactionId, created_at, notes, address, products, status }) => {
 
     const totalHarga = () => {
         let result = 0
@@ -15,7 +14,7 @@ const TransactionDetail = ({ setShowDetail, showDetail, index, transactionId, cr
 
     const potongan = () => {
         let result = 0
-        products.forEach((val, index) => {
+        products.forEach(val => {
             if (val.productDiscount !== "0") result += (val.productPrice * val.productDiscount/100 ) * val.productQty
         })
         return result
@@ -35,7 +34,7 @@ const TransactionDetail = ({ setShowDetail, showDetail, index, transactionId, cr
                         </div>
                         <div style={{ display: "grid", flex: "1" }}>
                             <span className="text-muted">Status</span>
-                            <span>Menunggu Pembayaran</span>
+                            <span>{status}</span>
                         </div>
                     </div>
                     <div style={{ display: "grid" }}>
@@ -90,6 +89,15 @@ const TransactionDetail = ({ setShowDetail, showDetail, index, transactionId, cr
                     <p className="mb-0" style={{ textAlign: "justify", width: "90%" }}>{address[0].addressDetail}, {address[0].district}, {address[0].city}, {address[0].postalCode}, DKI Jakarta</p>
                     <p className="mb-0">Telp: +62{address[0].handphone}</p>
                 </div>
+                {
+                    notes ?
+                    <div style={{ fontSize: "15px", borderBottom: "1px solid #dee2e6" }}>
+                        <span className="px-0 text-muted">Notes</span>
+                        <p>{notes}</p>
+                    </div>
+                    :
+                    null
+                }
                 <div style={{ fontSize: "15px", paddingBottom: "10px" }}>
                     <span className="px-0 text-muted">Pembayaran</span>
                     <div className="row">

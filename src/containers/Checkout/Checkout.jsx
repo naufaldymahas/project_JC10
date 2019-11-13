@@ -7,6 +7,7 @@ import Identity from '../../components/Checkout/Identity'
 import CheckoutCart from '../../components/Checkout/CheckoutCart'
 import Nav from '../../components/Checkout/Nav'
 import Payment from '../../components/Checkout/Payment'
+import Login from '../../components/Home/Login'
 
 import './Checkout.css'
 import '../../components/Checkout/style/Identity.css'
@@ -14,18 +15,25 @@ import '../../components/Checkout/style/CheckoutCart.css'
 
 import API from '../../services'
 import image from '../../assets/logo.png'
+import Swal from 'sweetalert2'
+import Cookies from 'universal-cookie'
+
+const cookies = new Cookies()
 
 const Checkout = () => {
 
-    const { user, cart } = useSelector(state => ({
+    const { user, cart, userName } = useSelector(state => ({
         user: state.authReducer, 
-        cart: state.productReducer
+        cart: state.productReducer,
+        userName: state.authReducer.fullName
     }))
 
     const [ state, setState ] = useState({
         address: [],
         loading: true
     })
+
+    console.log(user)
 
     const [ voucher, setVoucher ] = useState(false)
 
@@ -60,22 +68,43 @@ const Checkout = () => {
         transactionId: ''
     })
 
+    console.log(cart)
+
     const paymentHandler = () => {
-        let dateNow = moment().format('YYYY-MM-DD') + ' ' + moment().format('kk:mm:ss')
-        let deadline = moment().format('YYYY-MM-DD') + ' ' + moment().add(8, 'h').format('kk:mm:ss')
-        let Data = {...data, dateNow, deadline}
-        API.addTranscation(Data)
+        let dateNow = moment().format('YYYY-MM-DD kk:mm:ss')
+        let deadline = moment().add(8, 'h').format('YYYY-MM-DD kk:mm:ss')
+        let Data = {...data, dateNow, deadline, userName}
+        console.log(cart.addedProduct)
+        API.checkStockCheckout(cart)
         .then(res => {
-            const { uniqueId } = res.data
-            let data = {...cart, uniqueId }
-            API.addTranscationDetail(data)
-            .then(res => {
-                console.log(res)
-                setPayment({...payment, isDone: true, transactionId: res.data.uniqueId})
-            })
-            .catch(err => {
-                console.log(err)
-            })
+            console.log(res.data)
+            if (!res.data) {
+                API.updateIsRemove({cart, userId: user.id})
+                .then(res => {
+                    API.addTranscation(Data)
+                    .then(res => {
+                        const { uniqueId } = res.data
+                        let data = {...cart, uniqueId }
+                        API.addTranscationDetail(data)
+                        .then(res => {
+                            setPayment({...payment, isDone: true, transactionId: res.data.uniqueId})
+                            cookies.remove('cart')
+                        })
+                        .catch(err => {
+                            console.log(err)
+                        })
+                    })
+                    .catch(err => console.log(err))       
+                })
+                .catch(err => console.log(err))
+            }
+            else {
+                Swal.fire({
+                    type: "error",
+                    title: "Terjadi Perubahan Stocks Barang!"
+                })
+                return <Redirect to="/"/>
+            }
         })
         .catch(err => console.log(err))
     }
@@ -88,6 +117,8 @@ const Checkout = () => {
             else setData({ ...data, [cond]: val })
         }
     }
+
+    const [login, setLogin] = useState(0)
 
     if (cart.addedProduct.length !== 0) {
         if (!state.loading) {
@@ -105,49 +136,67 @@ const Checkout = () => {
                                 <p className="font-weight-light">
                                     Belum jadi member? yuks daftar! Biar bisa tracking order 😘
                                 </p>
-                                <button className="btn btn-outline-secondary col-5 mx-1 px-0">Login</button>
-                                <button className="btn btn-outline-success col-5 mx-1 px-0">Daftar</button>
+                                <button onClick={ () => setLogin(1) } className="btn btn-outline-secondary col-5 mx-1 px-0">Login</button>
+                                <a href="/register"><button className="btn btn-outline-success col-5 mx-1 px-0">Daftar</button></a>
                         </div>
                     </div>
+                    {
+                        login ?
+                        <Login setLogin={ setLogin }/>
+                        :
+                        null
+                    }
                 </div>
                 )
             } else {
                 if (!payment.isDone) {
-                    return (
-                        <Fragment>
-                            <Nav/>
-                            <div className="row mx-0" style={{height: "960px"}}>
-                                <div className="col-md-7">
-                                    <Identity
-                                    fullName={ user.fullName }
-                                    address={ state.address }
-                                    data={ data }
-                                    setData={ setData }
-                                    inputHandler={ inputHandler }/>
+                    if (user.isVerified) {
+                        return (
+                            <Fragment>
+                                <Nav/>
+                                <div className="row mx-0" style={{height: "960px"}}>
+                                    <div className="col-md-7">
+                                        <Identity
+                                        fullName={ user.fullName }
+                                        address={ state.address }
+                                        data={ data }
+                                        setData={ setData }
+                                        inputHandler={ inputHandler }/>
+                                    </div>
+                                    <div className="col-md-5 pl-0 pl-15">
+                                        <CheckoutCart
+                                        carts={ cart }
+                                        voucher={ voucher }
+                                        setVoucher={ setVoucher }/>
+                                        <Payment
+                                        data={ data }
+                                        setData={ setData }
+                                        inputHandler={ inputHandler }/>
+                                    </div>
+                                    <div style={{borderTop: "1px solid #d8d8d8"}} className="text-center py-3 mt-3 col-12">
+                                        {
+                                            penerima && nomerHp && alamat && kota && kecamatan && kodePos && alamatLengkap && tanggalPengiriman && jamPengiriman && bank && namaPemilik && nomerRekening 
+                                            ?
+                                            <button onClick={ paymentHandler } className="btn btn-success form-control col-10">Lanjut Ke Pembayaran</button>
+                                            :
+                                            <button className="btn btn-success form-control col-10 disabled-type-1">Lanjut Ke Pembayaran</button>
+                                        }
+                                        
+                                    </div>
                                 </div>
-                                <div className="col-md-5 pl-0 pl-15">
-                                    <CheckoutCart
-                                    carts={ cart }
-                                    voucher={ voucher }
-                                    setVoucher={ setVoucher }/>
-                                    <Payment
-                                    data={ data }
-                                    setData={ setData }
-                                    inputHandler={ inputHandler }/>
+                            </Fragment>
+                        )
+                    } else {
+                        return (
+                            <Fragment>
+                                <Nav/>
+                                <div className="col-md-12">
+                                    <h4 className="col-md-5 mx-auto text-center mt-5">Silahkan verifikasi Account terlebih dahulu</h4>
+                                    <p className="col-md-4 mx-auto text-center">Klik <span style={{ color: "blue", cursor: "pointer" }} onClick={() => window.open(`http://localhost:9000/auth/sendyemail?email=${user.email}`)}>disini</span> untuk mengirim ulang email verifikasi</p>
                                 </div>
-                                <div style={{borderTop: "1px solid #d8d8d8"}} className="text-center py-3 mt-3 col-12">
-                                    {
-                                        penerima && nomerHp && alamat && kota && kecamatan && kodePos && alamatLengkap && tanggalPengiriman && jamPengiriman && bank && namaPemilik && nomerRekening 
-                                        ?
-                                        <button onClick={ paymentHandler } className="btn btn-success form-control col-10">Lanjut Ke Pembayaran</button>
-                                        :
-                                        <button className="btn btn-success form-control col-10 disabled-type-1">Lanjut Ke Pembayaran</button>
-                                    }
-                                    
-                                </div>
-                            </div>
-                        </Fragment>
-                    )
+                            </Fragment>
+                        )
+                    }
                 } else {
                     return <Redirect to={`/payment/${payment.transactionId}`}/>
                 }

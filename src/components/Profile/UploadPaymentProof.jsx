@@ -3,14 +3,12 @@ import { Modal } from 'react-bootstrap'
 import API from '../../services'
 import Swal from 'sweetalert2'
 
-const UploadPaymentProof = ({ uploadPayment, setUploadPayment, index, transactionId, id, paymentProof }) => {
-
-    console.log(paymentProof)
-
-    console.log(id)
+const UploadPaymentProof = ({ uploadPayment, setUploadPayment, index, transactionId, id, paymentProof, update, setUpdate }) => {
 
     const btn = useRef('btn')
+
     const btnClick = () => btn.current.click()
+
     const [input, setInput] = useState({
         file: '',
         preview: paymentProof
@@ -35,8 +33,21 @@ const UploadPaymentProof = ({ uploadPayment, setUploadPayment, index, transactio
                     type: 'success',
                     title: res.data.message
                 })
+                setUpdate(!update)
             }
         })
+    }
+
+    const renderPreview = () => {
+        if (input.preview) {
+            if (input.preview.includes('http://localhost:3000')) {
+                return <img style={{ width: "100%" }} src={input.preview} alt="gambar"/>
+            } else {
+                return <img style={{ width: "100%" }} src={'http://localhost:9000/' + input.preview} alt="gambar"/>
+            }
+        } else {
+            return null
+        }
     }
 
     return (
@@ -67,12 +78,7 @@ const UploadPaymentProof = ({ uploadPayment, setUploadPayment, index, transactio
                     </div>
                 </div>
                 <div className="text-center mt-1" style={{ width: "100%" }}>
-                    {
-                        input.preview ?
-                        <img style={{ width: "100%" }} src={'http://localhost:9000/' + input.preview} alt="gambar"/>
-                        :
-                        null
-                    }
+                        {renderPreview()}
                 </div>
             </Modal.Body>
         </Modal>

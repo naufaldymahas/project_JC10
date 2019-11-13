@@ -1,6 +1,6 @@
 import React from 'react'
 
-const NewProduct = (props) => {
+const SearchProduct = (props) => {
 
     const checkInput = (id, price, stock) => {
         let product = props.addedProduct.find(product => product.id === id)
@@ -20,19 +20,18 @@ const NewProduct = (props) => {
         )
     }
 
+    if (props.products.length === 0) {
+        return <h4>Pencarian tidak ditemukan</h4>
+    } else {
     let products = props.products.map((product, index) => {
         return (
             <div className="col-2-type-2" key={index + 1}>
                 <div className="card-type-2">
-                    <a href={`/productdetail/${product.id}`}>
-                        <div className="img-c">
-                                <img style={{height: 'auto'}} src={props.API + product.image} alt="ini gambar product"/>
-                        </div>
-                    </a>
-
-                    <div className="card-body-type-1">
+                    <div className="img-c">
+                        <img style={{height: 'auto'}} src={props.API + product.image} alt="ini gambar product"/>
+                    </div>
+                    <div className="card-body-type-1 position-relative">
                         <h6 className="text-truncate">{product.name}</h6>
-                        {/* <p style={{fontSize: "14px"}} className="text-truncate text-muted">{product.unit}</p> */}
                         <span style={{ fontSize: "15px" }} className="px-0">Stock {product.displayStock}</span>
                         {product.discount ? 
                         <div style={{height: "80px", display: "grid"}}>
@@ -60,6 +59,7 @@ const NewProduct = (props) => {
         )
     })
     return products
+    }
 }
 
-export default NewProduct
+export default SearchProduct

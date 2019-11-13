@@ -7,6 +7,7 @@ const style = {
 
 const Cart = (props) => {
 
+
     const node = useRef()
 
     const outsideClick = e => {
@@ -18,6 +19,35 @@ const Cart = (props) => {
         document.addEventListener('mousedown', outsideClick)
     }, [])
 
+    const totalPrice = () => {
+        let total = 0
+        props.addedProduct.map(product => {
+            if (product.productDiscount) total += (product.productPrice - (product.productPrice * product.productDiscount/100)) * product.quantity
+            else total += product.productPrice * product.quantity
+        })
+        return total.toLocaleString('id')
+    }
+
+    const checkInput = (id, price, quantity) => {
+        let productFind = props.products.find(product => product.id === id)
+        return (
+            <>
+            <button onClick={() => props.buttonHandler('minus', id, price, quantity, true)} className="cart-btn minus">-</button>
+            <div className="cart-input">
+                <span style={{padding: 0, marginRight: "auto", marginLeft: "auto"}}>{quantity}</span>
+            </div>
+            {
+                productFind.displayStock === quantity 
+                ?
+                <button disabled style={{ cursor: "no-drop" }} className="cart-btn plus">+</button>
+                :
+                <button onClick={() => props.buttonHandler('plus', id, price, quantity, true)} className="cart-btn plus">+</button>
+            }
+
+            </>
+        )
+    }
+
     const cartProduct = () => {
         const cartProduct = props.addedProduct.map(product => {
                 return (
@@ -28,19 +58,31 @@ const Cart = (props) => {
                             </div>
                             <div className="cart-detail">
                                 <span className="cart-product-name px-0">{product.productName}</span>
-                                <p>{`1 pcs (500gr)`}</p>
-                                <span className="price">Rp. {product.productPrice.toLocaleString('id')}/ 1pcs</span>
+                                <p>{product.productUnit}</p>
+                                    {
+                                        product.productDiscount ?
+                                        <>
+                                            <p style={{ textDecoration: "line-through" }} className="price mb-0">Rp. {product.productPrice.toLocaleString('id')}</p>
+                                            <span className="price px-0">Rp. {(product.productPrice - (product.productPrice * product.productDiscount/100)).toLocaleString('id')}</span>
+                                        </>
+                                        :
+                                            <span className="price px-0">Rp. {product.productPrice.toLocaleString('id')}</span>
+
+                                    }
+
                                 <button onClick={() => props.removeProduct(product.id)} className="cart-remove-product"><i className="fa fa-trash"></i></button>
                             </div>
                         </div>
                         <div className="mt-1 mb-1">
-                            <button onClick={() => props.buttonHandler('minus', product.id, product.productPrice)} className="cart-btn minus">-</button>
-                            <div className="cart-input">
-                                <span style={{padding: 0, marginRight: "auto", marginLeft: "auto"}}>{product.quantity}</span>
-                            </div>
-                            <button onClick={() => props.buttonHandler('plus', product.id, product.productPrice)} className="cart-btn plus">+</button>
+                            {checkInput(product.id, product.productPrice, product.quantity)}
                             <div className="cart-input-price">
-                                <span>Rp. {(product.productPrice * product.quantity).toLocaleString('id')}</span>
+                                {
+                                    product.productDiscount ?
+                                    <span>Rp. {((product.productPrice - (product.productPrice * product.productDiscount/100)) * product.quantity).toLocaleString('id')}</span>
+                                    :
+                                    <span>Rp. {(product.productPrice * product.quantity).toLocaleString('id')}</span>
+                                }
+                                
                             </div>
                         </div>
                     </div>
@@ -80,7 +122,7 @@ const Cart = (props) => {
                             : null}
                         </div>
                         <div className="cart-checkout-price">
-                            <span style={{marginTop: "auto", marginBottom: "auto"}}>Rp. {props.total.toLocaleString('id')}</span>
+                            <span style={{marginTop: "auto", marginBottom: "auto"}}>Rp. {totalPrice()}</span>
                         </div>
                     </div>
                     <div className="text-center px-1 mt-2">

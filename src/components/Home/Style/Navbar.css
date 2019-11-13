@@ -80,6 +80,7 @@
     border-radius: 5px;
     border: 1px solid green;
     transition: 0.3;
+    padding: 5px 10px;
 }
 
 .daftar:hover {
@@ -90,18 +91,16 @@
 
 .btn-type1 {
     background-color: white;
-    padding: 12px;
     border-top: 1px solid #c9c9c9;
     border-bottom: 1px solid #c9c9c9;
     border-right: 1px solid #c9c9c9;
-    border-left: none
+    border-left: none;
+    padding: 1px 10px;
 }
 
 .input-color {
     border: 1px solid #c9c9c9;
-    padding-top: 5px;
-    padding-bottom: 6px;
-    width: 60%;
+    width: 80%;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
 }
@@ -125,9 +124,8 @@
 }
 
 .profile {
-    display: inline;
-    margin-left: 55px;
-    cursor: pointer;
+    border: none;
+    background-color: white;
     color: black;
     opacity: 0.6;
     transition: 0.3s;
@@ -144,8 +142,8 @@
 
 .profile-dropdown {
     position: absolute;
-    top: 3rem;
-    right: 4rem;
+    top: 2.4rem;
+    right: 5rem;
     border: 1px solid #cacaca;
     border-radius: 5px;
     background-color: white;

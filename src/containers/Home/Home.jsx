@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import querystring from 'query-string'
 
 // Components
 import Navbar from '../../components/Home/Navbar'
@@ -13,10 +13,9 @@ import API from '../../services'
 import './Home.css'
 
 
-const Home = () => {
+const Home = (props) => {
 
     const [ state, setState ] = useState({
-        data: null,
         products: null,
         loading: true
     })
@@ -26,29 +25,61 @@ const Home = () => {
     const getData = () => {
         API.getProductsDataAPI()
         .then(res => {
-            // setState({...state, data: res.data})
-            let data = res.data
-            API.getProductsData()
-            .then(res => setState({...state, products: res.data, data, loading: false}))
+            setState({...state, products: res.data, loading: false})
         }) 
             
     }
 
+    const [search, setSearch] = useState('')
+
+    const [searchData, setSearchData] = useState('')
+
+    const searchHandler = e => {
+        e.preventDefault()
+        API.getSearchProduct({search})
+        .then(res => {
+            setSearchData(res.data)
+            props.history.push('/search?' + querystring.stringify({search}))
+        })
+        .catch(err => console.log(err))
+    }
+
     useEffect(() => {
-        getData()
+        if (!props.history.location.search) getData()
+        else {
+            API.getSearchProduct(querystring.parse(props.history.location.search))
+            .then(res => {
+                console.log(res.data)
+                setSearchData(res.data)
+                setState({...state, loading: false})
+            })
+            .catch(err => console.log(err))
+        }
     }, [])
 
     if (!state.loading) {
         return (
             <Fragment>
-                <Navbar setLogin={ setLogin } />
+                <Navbar setLogin={ setLogin }
+                search={ search }
+                setSearch={ setSearch }
+                searchHandler={ searchHandler }
+                products={ state.products.allProducts }/>
                 {login ? <Login openLogin={ login } setLogin={ setLogin } /> : null}
             
                 <div className="container mt-5">
-                    <LandingPage />
-                            <Products allProducts={state.data.allProducts}
-                            newestProducts={state.data.newestProduct}
-                            product={state.products}/>
+                    {
+                        !searchData ?
+                        <>
+                            <LandingPage />
+                            <Products allProducts={state.products.allProducts}
+                            newestProducts={state.products.newestProducts}
+                            product={state.products.specialPromo}/>
+                        </>
+                        :
+                            <Products searchProduct={ searchData }/>
+                    }
+
                 </div>
             </Fragment>
         )

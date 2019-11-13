@@ -1,0 +1,25 @@
+.btn-plus1 {
+    border: 1px solid grey;
+    background-color: white;
+    padding: 4px 20px;
+    transform: 0.3s;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.btn-plus1:hover {
+    color: green
+}
+
+.btn-minus1 {
+    border: 1px solid grey;
+    background-color: white;
+    padding: 4px 20px;
+    transform: 0.3s;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.btn-minus1:hover {
+    color: red;
+}

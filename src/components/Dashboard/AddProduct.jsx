@@ -1,16 +1,19 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import './style/AddProduct.css'
 import API from '../../services'
 import Swal from 'sweetalert2'
 
-const AddProduct = ({ setAddProduct, categories }) => {
+const AddProduct = ({ products, setAddProduct, categories, setNewData }) => {
 
     const [ data, setData ] = useState({
         productName: '',
         productPrice: '',
         productCategory: '',
         productImage: '',
-        productDescription: ''
+        productDescription: '',
+        productDiscount: '',
+        productStock: '',
+        productUnit: ''
     })
 
     const [ warning, setWarning ] = useState('')
@@ -33,6 +36,12 @@ const AddProduct = ({ setAddProduct, categories }) => {
             setData({...data, productCategory: value})
         } else if (cond ==='description') {
             setData({...data, productDescription: value})
+        } else if (cond === 'unit') {
+            setData({...data, productUnit: value})
+        } else if (cond === 'stock') {
+            setData({...data, productStock: value.replace(/\D/,'')})
+        } else if (cond === 'discount') {
+            setData({...data, productDiscount: value})
         } else {
             let file = e.target.files[0]
             if (file.size > 2000000) {
@@ -45,16 +54,10 @@ const AddProduct = ({ setAddProduct, categories }) => {
 
 
     const submitHandler = () => {
-        if (data.productCategory && data.productDescription && data.productImage && data.productName && data.productPrice) {
+        if (data.productCategory && data.productDescription && data.productImage && data.productName && data.productPrice && data.productDiscount && data.productStock && data.productUnit) {
             let fd = new FormData()
-            let DATA = {
-                name: data.productName,
-                price: data.productPrice,
-                description: data.productDescription,
-                category: data.productCategory
-            }
             fd.append('product', data.productImage)
-            fd.append('data', JSON.stringify(DATA))
+            fd.append('data', JSON.stringify(data))
             API.addProducts(fd)
             .then(res => {
             let { message } = res.data
@@ -63,6 +66,7 @@ const AddProduct = ({ setAddProduct, categories }) => {
                 title: message,
                 timer: 1000
             })
+            setNewData(true)
             setAddProduct(false)
             })
         } else {
@@ -71,12 +75,27 @@ const AddProduct = ({ setAddProduct, categories }) => {
                 title: 'Please fill the form!'
             })
         }
-        
     }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', outsideClick)
+        return () => {
+            document.removeEventListener('mousedown', outsideClick)
+        }
+    })
+
+    const outsideClick = e => {
+        if (node.current.contains(e.target)) return
+        else setAddProduct(false)
+    }
+
+    const node = useRef()
+
+    console.log(products)
 
     return (
         <div className="modal-add">
-            <div className="modal-content-add">
+            <div ref={ node } className="modal-content-add">
                 <form>
                         <div className="form-group">
                             <div className="form-row">
@@ -91,16 +110,40 @@ const AddProduct = ({ setAddProduct, categories }) => {
                             </div>
                         </div>
                         <div className="form-group">
+                            <div className="form-row">
+                                <div className="col">
+                                    <label className="text-muted" style={{fontSize: "15px"}} htmlFor="pu">Product Unit</label>
+                                    <input value={data.productUnit} onChange={ e => inputHandler('unit', e) } type="text" className="form-control" id="pu"/>
+                                </div>
+                                <div className="col">
+                                    <label className="text-muted" style={{fontSize: "15px"}} htmlFor="s">Stock</label>
+                                    <input placeholder={0} value={data.productStock} onChange={ e => inputHandler('stock', e) } type="text" className="form-control" id="s"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="form-group">
                             <label style={{fontSize: "15px"}} className="text-muted" htmlFor="category">Description</label>
                             <input value={data.productDescription} onChange={ e => inputHandler('description', e) } className="form-control" type="text" id="category"/>
                         </div>              
                         <div className="form-group">
-                            <select defaultValue={data.categories} onChange={ e => inputHandler('category', e) }>
-                                <option value=''>Select Category: </option>
-                                {categories.map((category, index) => {
-                                    return <option key={index + 1} value={category}>{category}</option>
-                                })}
-                            </select>
+                            <div className="form-row">
+                                <div className="col">
+                                    <select defaultValue={data.categories} onChange={ e => inputHandler('category', e) }>
+                                        <option value=''>Select Category: </option>
+                                        {categories.map((category, index) => {
+                                            return <option key={index + 1} value={category}>{category}</option>
+                                        })}
+                                    </select>
+                                </div>
+                                <div className="col">
+                                    <select defaultValue={data.discount} onChange={ e => inputHandler('discount', e) }>
+                                        <option value=''>Select Discount: </option>
+                                        {products.discount.map(disc => (
+                                            <option key={disc.id} value={disc.id}>{disc.id}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
                         </div>              
                         <div className="form-group">
                             <label style={{fontSize: "15px"}} className="text-muted" htmlFor="image">Image</label>
