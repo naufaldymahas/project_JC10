@@ -32,26 +32,33 @@ const App = () => {
         
         let cart = cookies.get('cart')
 
-        if (user) {
-            const { id, fullName, email, isVerified, role } = user
-            dispatch(isLogin(id, fullName, email, isVerified, role))
-        }
-        
         if (cart) {
             let product = cookies.get('cart').product
             let total = cookies.get('cart').total
             dispatch(cookieProduct(product, total))
         }
 
-        setLoading(false)
-
+        if (user) {
+            const { id } = user
+            let params = {
+                id
+            }
+            API.loginAfterRegister(params)
+            .then(res => {
+                const { email, id, fullName, isVerified, role } = res.data.result
+                dispatch(isLogin(id, fullName, email, isVerified, role))
+                setLoading(false)
+            })
+        } else {
+            setLoading(false)
+        }
     }, [])
 
     useEffect(() => {
         let user = cookies.get('user')
-        const { id } = user
-
+        
         if (user) {
+            const { id } = user
             API.checkDeadlineTransaction({id})
             .then(res => {
                 if (res.data.length !== 0) {
@@ -89,7 +96,6 @@ const App = () => {
                     <Route path="/checkout" component={Checkout}/>
                     <Route path="/payment/:transactionId" component={PaymentConfirmation}/>
                     <Route path="/productdetail/:productId" component={ProductDetail}/>
-                    <Route path="/test" component={ProductDetail}/>
                 </Switch>
         )
     } else {

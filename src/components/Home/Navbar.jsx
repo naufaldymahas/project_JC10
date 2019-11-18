@@ -20,7 +20,9 @@ const Navbar = ({ setLogin, search, setSearch, searchHandler, products }) =>{
     const dispatch = useDispatch()
 
     const buttonHandler = (cond ,productId, price, quantity) => {
-        dispatch(inputHandler(cond, productId, price, quantity, id))
+        // setTimeout(() => {
+            dispatch(inputHandler(cond, productId, price, quantity, id))
+        // }, 1000);
     }
 
     const cartHandler = (cond) => {
@@ -116,11 +118,11 @@ const Navbar = ({ setLogin, search, setSearch, searchHandler, products }) =>{
                         <ul className="profile-dropdown-item">
                             {
                                 role === "admin" ?
-                                <li style={{paddingTop: "10px"}}><a className="link" href="/dashboard">Dashboard</a></li> 
+                                <li style={{paddingTop: "10px"}}><a className="link" href="/dashboard/orders/orderlist/1">Dashboard</a></li> 
                                 :
                                 null
                             }
-                            <li><a href={`/profile/${id}/biodata`}>Profil</a></li>
+                            <li><a className="link" href={`/profile/${id}/biodata`}>Profil</a></li>
                             <li style={{paddingBottom: "5px"}} onClick={logoutHandler}>Keluar</li>
                         </ul>
                     </div>

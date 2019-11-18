@@ -26,8 +26,8 @@ const moment = require("moment");
 // // // // let dateNow = 
 // // // console.log(moment().locale('id').format('LL'))
 
-// // // console.log(moment().format('YYYY-MM-DD') + ' ' + moment().format('kk:mm:ss'))
-// // // console.log(moment().add(8, 'd').format('YYYY-MM-DD') + ' ' + moment().format('kk:mm:ss'))
+// // // console.log(moment().format('YYYY-MM-DD') + ' ' + moment().format('HH:mm:ss'))
+// // // console.log(moment().add(8, 'd').format('YYYY-MM-DD') + ' ' + moment().format('HH:mm:ss'))
 
 // // // // console.log(moment('x'))
 
@@ -35,7 +35,7 @@ const moment = require("moment");
 
 // // // console.log(new Date('2019-11-01T14:42:36.000Z').getTime())
 
-// // // let x = moment().add(8, 'h').format('YYYY-MM-DDTkk:mm:ss.SSS')+ 'Z'
+// // // let x = moment().add(8, 'h').format('YYYY-MM-DDTHH:mm:ss.SSS')+ 'Z'
 // // // console.log(new Date(x))
 
 
@@ -97,7 +97,7 @@ const moment = require("moment");
 
 // // console.log(count)
 
-// // console.log(moment().format('YYYY-MM-DD kk:mm:ss'))
+// // console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
 
 // // const Membership = ()=> {
   
@@ -195,11 +195,8 @@ const moment = require("moment");
 
 // console.log(Math.ceil(Math.random()*10))
 
-// console.log(moment().format('YYYY-MM-DD') + ' ' + moment().add(8, 'h').format('kk:mm:ss'))
-// console.log(moment().add(8, 'h').format('YYYY-MM-DD kk:mm:ss'))
+// console.log(moment().format('YYYY-MM-DD') + ' ' + moment().add(8, 'h').format('HH:mm:ss'))
+// console.log(moment().add(8, 'h').format('YYYY-MM-DD HH:mm:ss'))
 
-console.log(moment('2019-10-31 19:37:16').add(8, 'h').format('YYYY-MM-DD kk:mm:ss'))
-
-setInterval(() => {
-   console.log('masuk') 
-}, 1000);
+let x = Math.ceil(13/10)
+console.log(x)

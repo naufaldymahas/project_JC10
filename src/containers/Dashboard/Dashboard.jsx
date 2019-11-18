@@ -1,38 +1,30 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Route } from 'react-router-dom'
-import Sidebar from '../../components/Dashboard/Sidebar'
 import ProductManagement from '../../components/Dashboard/ProductManagement'
 import Customers from '../../components/Dashboard/Customers'
 import Orders from '../../components/Dashboard/Orders'
 import Reports from '../../components/Dashboard/Reports'
+import Navigation from '../../components/Dashboard/Navigation'
 import './Dashboard.css'
 
 const Dashboard = (props) => {
-
-    console.log(props.location.pathname.split('/')[2])
-
-    const [ anu, setAnu ] = useState('')
-
+    
         return (
-            <div className="row" style={{backgroundColor: "#fdfdff", height: "100%", width: "101%"}}>
-                <Sidebar setAnu={ setAnu }/>
-                <div className="col-10 pl-0">
-                    <div className="container">
-                    <div aria-label="breadcrumb">
-                        <ol className="breadcrumb">
-                            <li className="breadcrumb-item active" aria-current="page">
-                                <a className="breadcrumb-link" href="/dashboard">Dashboard</a>
-                            </li>
-                            <li className="breadcrumb-item">
-                                <span className="breadcrumb-link">{props.location.pathname.split('/')[2]}</span>
-                            </li>
-                        </ol>
+            <div>
+                <nav className="d-flex" style={{ borderBottom: "1px solid #dee2e6" }}>
+                    <div className="col-md-1 my-auto p-2" style={{ textAlign: "right" }}>
+                        <a href="/">Home</a>
                     </div>
-                        <Route path="/dashboard/orders" component={Orders}/>
-                        <Route path="/dashboard/productmanagement" component={ProductManagement} />
-                        <Route path="/dashboard/customers" component={Customers}/>
-                        <Route path="/dashboard/reports" component={Reports}/>
+                    <div className="col-md-11" style={{ textAlign: "right" }}>
+                        <button className="btn">Hello, You!</button>
                     </div>
+                </nav>
+                <Navigation props={props}/>
+                <div className="px-5">
+                    <Route path="/dashboard/orders/:id" component={Orders}/>
+                    <Route path="/dashboard/customers" component={Customers}/>
+                    <Route path="/dashboard/products" component={ProductManagement}/>
+                    <Route path="/dashboard/reports" component={Reports}/>
                 </div>
             </div>
         )

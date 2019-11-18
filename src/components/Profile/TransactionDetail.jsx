@@ -39,7 +39,7 @@ const TransactionDetail = ({ setShowDetail, showDetail, index, transactionId, cr
                     </div>
                     <div style={{ display: "grid" }}>
                         <span className="text-muted">Tanggal Pembelian</span>
-                        <span>{moment(created_at).format('D MMM YYYY kk:mm')} WIB</span>
+                        <span>{moment(created_at).format('D MMM YYYY HH:mm')} WIB</span>
                     </div>
                 </div>
                 <div style={{ borderBottom: "1px solid #dee2e6", fontSize: "15px" }} className="pb-1">

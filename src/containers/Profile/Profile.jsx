@@ -9,6 +9,8 @@ const Profile = () => {
 
     const [ data, setData ] = useState([])
 
+    const [ render, setRender ] = useState()
+
     useEffect(() => {
         if (user.email) {
             const { id } = user
@@ -16,15 +18,19 @@ const Profile = () => {
             .then(res => setData(res.data))
             .catch(err => console.log(err))
         }
-    }, [user])
+    }, [user, render])
 
     return (
         <Fragment>
             <div className="text-center">
-                <h4 className="mt-3"><a href="/">Home</a></h4>
+                <h4 className="mt-3" style={{ height: "45px" }}>
+                    <a href="/">
+                        <img className="h-100" src={require('../../assets/logo-02.png')} alt="Home"/>
+                    </a>
+                </h4>
             </div>
             <div className="container">
-                <Edit user={user} dataAddress={data}/>
+                <Edit render={ render } setRender={ setRender } user={user} dataAddress={data}/>
             </div>
         </Fragment>
     )

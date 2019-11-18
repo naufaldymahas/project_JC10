@@ -4,7 +4,7 @@ import Carousel from 'react-bootstrap/Carousel'
 const LandingPage = () => {
     const [index, setIndex] = useState(0);
     const [direction, setDirection] = useState(null);
-    const [image, setImage] = useState([])
+    // const [image, setImage] = useState([])
 
     const handleSelect = (selectedIndex, e) => {
         setIndex(selectedIndex);
@@ -14,26 +14,26 @@ const LandingPage = () => {
   return (
     <div className="mx-auto mb-4" style={{width: 900}}>
     <Carousel activeIndex={index} direction={direction} onSelect={handleSelect}>
-      <Carousel.Item>
+      <Carousel.Item style={{ height: "400px" }}>
         <img
-          className="d-block w-100"
-          src="https://mayvers.com.au/wp-content/uploads/2017/09/test-image.jpg"
+          className="d-block h-100"
+          src={require('../../assets/banner1.jpg')}
           alt="First slide"
         />
 
       </Carousel.Item>
-      <Carousel.Item>
+      <Carousel.Item style={{ height: "400px" }}>
         <img
-          className="d-block w-100"
-          src="https://mayvers.com.au/wp-content/uploads/2017/09/test-image.jpg"
+          className="d-block h-100"
+          src={require('../../assets/banner2.jpg')}
           alt="Second slide"
         />
 
       </Carousel.Item>
-      <Carousel.Item>
+      <Carousel.Item style={{ height: "400px" }}>
         <img
-          className="d-block w-100"
-          src="https://mayvers.com.au/wp-content/uploads/2017/09/test-image.jpg"
+          className="d-block h-100"
+          src={require('../../assets/banner3.jpg')}
           alt="Third slide"
         />
 

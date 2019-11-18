@@ -9,7 +9,7 @@ const Payment = ({ data, setData, inputHandler }) => {
                 <span>Rekening</span>
             </div>
             <div className="container">
-                <h5 className="text-muted my-1">Pilih Bank</h5>
+                <h5 className="text-muted my-3">Pilih Bank</h5>
                 <div className="col-md-12 px-0 d-inline-flex">
                     <div className="col-md-6 px-0 text-center">
                         <label className="mb-0" htmlFor="bankMandiri">
@@ -38,14 +38,7 @@ const Payment = ({ data, setData, inputHandler }) => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-3">
-                    <select className="custom-select float-none">
-                        <option value="">Silahkan Pilih:</option>
-                        <option value="anjay">Anjay Mabar</option>
-                    </select>
-                </div>
                 <div className="col-md-12 px-0 my-3 d-inline-flex">
-
                     <div className="col-md-6 pl-0">
                         <label htmlFor="cardHolder" className="text-muted text-truncate text-res">Nama Pemilik Kartu</label>
                         <input value={ data.namaPemilik } onChange={ e => inputHandler('namaPemilik', e.target.value)} className="form-control" id="cardHolder" type="text"/>

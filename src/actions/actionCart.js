@@ -42,13 +42,6 @@ export const cartHandler = (cond, id, productPrice, quantity, userId, cart) => {
                     id, quantity: qty, userId
                 }
                 API.carthandler(data)
-                .then(res => {
-                    Swal.fire({
-                        type: "success",
-                        title: res.data.message,
-                        timer: 3000
-                    })
-                })
                 dispatch({
                     type: type.PLUS_ORDER,
                     payload: {
@@ -78,13 +71,6 @@ export const cartHandler = (cond, id, productPrice, quantity, userId, cart) => {
                     })
                 } else {
                     API.carthandler(data)
-                    .then(res => {
-                        Swal.fire({
-                            type: "success",
-                            title: res.data.message,
-                            timer: 3000
-                        })
-                    })
                     dispatch({
                         type: type.MINUS_ORDER,
                         payload: {
@@ -100,13 +86,6 @@ export const cartHandler = (cond, id, productPrice, quantity, userId, cart) => {
                     id, quantity, userId
                 }
                 API.carthandler(data)
-                .then(res => {
-                    Swal.fire({
-                        type: "success",
-                        title: res.data.message,
-                        timer: 3000
-                    })
-                })
                 dispatch({
                     type: type.PLUS_ORDER,
                     payload: {
@@ -135,13 +114,6 @@ export const cartHandler = (cond, id, productPrice, quantity, userId, cart) => {
                     })
                 } else {
                     API.carthandler(data)
-                    .then(res => {
-                        Swal.fire({
-                            type: "success",
-                            title: res.data.message,
-                            timer: 3000
-                        })
-                    })
                     dispatch({
                         type: type.MINUS_ORDER,
                         payload: {

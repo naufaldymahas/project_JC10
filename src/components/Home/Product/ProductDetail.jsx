@@ -49,7 +49,7 @@ const ProductDetail = (props) => {
         .then(res => setState({...state, suggestion: res.data, loading: false}))
         }
 
-        if (quantity.length !== 0) cookies.set('cart', { product: quantity, total }, { path: '/', expires: new Date(moment().add(8, 'h').format('YYYY-MM-DDTkk:mm:ss.SSS')+ 'Z') })
+        if (quantity.length !== 0) cookies.set('cart', { product: quantity, total }, { path: '/', expires: new Date(moment().add(8, 'h').format('YYYY-MM-DDTHH:mm:ss.SSS')+ 'Z') })
 
     }, [product, quantity])
 
@@ -60,7 +60,9 @@ const ProductDetail = (props) => {
     }
 
     const buttonHandler = (cond ,id, price) => {
-        dispatch(cartHandler(cond, id, price, renderInput(), userId))
+        // setTimeout(() => {
+            dispatch(cartHandler(cond, id, price, renderInput(), userId))
+        // }, 1000);
     }
 
     const checkInput = (id, price, stock) => {

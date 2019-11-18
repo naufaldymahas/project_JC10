@@ -52,7 +52,7 @@ export const onLogin = (email, password) => {
                             total
                         }
                     })
-                    cookies.set('cart', { products, total }, { path: '/', expires: new Date(moment().add(8, 'h').format('YYYY-MM-DDTkk:mm:ss.SSS')+ 'Z') })
+                    cookies.set('cart', { products, total }, { path: '/', expires: new Date(moment().add(8, 'h').format('YYYY-MM-DDTHH:mm:ss.SSS')+ 'Z') })
                 })
                 cookies.set('user', { id, fullName, email, isVerified, role }, { path: '/' })
                 dispatch({
@@ -72,18 +72,20 @@ export const onLogin = (email, password) => {
 }
 
 export const isLogin = (id, fullName, email, isVerified, role) => {
-    return (
-        {
-            type: type.IS_LOGIN,
-            payload: {
-                id,
-                fullName, 
-                email,
-                isVerified,
-                role
-            }
-        }
-    )
+    return dispatch => {
+                dispatch(
+                    {
+                        type: type.IS_LOGIN,
+                        payload: {
+                            id,
+                            fullName, 
+                            email,
+                            isVerified,
+                            role
+                        }
+                    }
+                )
+    }
 }
 
 export const changeBiodata = (id, fullName, email, isVerified, role) => {

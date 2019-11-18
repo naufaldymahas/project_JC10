@@ -4,7 +4,7 @@ import ModalHeader from 'react-bootstrap/ModalHeader'
 import API from '../../services'
 import Swal from 'sweetalert2'
 
-const AddAlamat = ({ show, setShow, id }) => {
+const AddAlamat = ({ show, setShow, id, setRender, render }) => {
 
     const city = ['Jakarta Selatan', 'Jakarta Pusat', 'Jakarta Timur', 'Jakarta Utara', 'Jakarta Barat', 'Kepulauan Seribu']
 
@@ -34,6 +34,7 @@ const AddAlamat = ({ show, setShow, id }) => {
             .then(res => {
                 Swal.fire(res.data.message, '', 'success')
                 setShow(false)
+                setRender(!render)
             })
             .catch(err => console.log(err))
         } else {

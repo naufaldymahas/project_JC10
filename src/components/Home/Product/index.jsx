@@ -27,7 +27,9 @@ const Product = (props) => {
     }
 
     const buttonHandler = (cond ,id, price, quantity) => {
-        dispatch(cartHandler(cond, id, price, quantity, userId))
+        // setTimeout(() => {
+            dispatch(cartHandler(cond, id, price, quantity, userId))
+        // }, 1000);
     }
 
     const renderInput = (id) => {
@@ -46,7 +48,7 @@ const Product = (props) => {
             mounted.current = true
             return;
         }
-        cookies.set('cart', { product: quantity, total }, { path: '/', expires: new Date(moment().add(8, 'h').format('YYYY-MM-DDTkk:mm:ss.SSS')+ 'Z') })
+        cookies.set('cart', { product: quantity, total }, { path: '/', expires: new Date(moment().add(8, 'h').format('YYYY-MM-DDTHH:mm:ss.SSS')+ 'Z') })
     }, [quantity, total])
 
     return (

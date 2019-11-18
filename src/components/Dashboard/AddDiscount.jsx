@@ -5,32 +5,42 @@ import Swal from 'sweetalert2'
 
 const AddDiscount = (props) => {
 
-    const [ data, setData ] = useState()
+    const [ data, setData ] = useState('')
 
-    const [ edit, setEdit ] = useState(false)
-
-    // const [idx, setIdx] = useState()
+    const [ edit, setEdit ] = useState({
+        cond: false,
+        data: ''
+    })
 
     const submitHandler = () => {
         let DATA = {
             data, edit
         }
         API.editHandler(DATA)
-        .then(() => {
-            Swal.fire({
-                type: "success",
-                title: "Berhasil!"
-            })
+        .then(res => {
+            console.log(res)
+            if (res.data == "Discount already exists") {
+                Swal.fire({
+                    type: "error",
+                    title: res.data
+                })
+            } else {
+                Swal.fire({
+                    type: "success",
+                    title: res.data
+                })
+            }
         })
+        props.setNewData(true)
     }
 
     const editHandler = e => {
         if (e) {
             setData(e)
-            setEdit(true)
+            setEdit({...edit, cond: true, data: e})
         } else {
-            setData(e)
-            setEdit(false)
+            setData('')
+            setEdit({...edit, cond: false, data: ''})
         }
     }
 

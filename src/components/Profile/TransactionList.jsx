@@ -22,9 +22,6 @@ const TransactionList = ({ id }) => {
         })
     }, [update])
 
-    // console.log(data)
-
-    console.log(update)
 
     const renderProductList = (products, index) => {
             return (
@@ -134,20 +131,20 @@ const TransactionList = ({ id }) => {
                 <li key={ index } className="card mb-2">
                     <div>
                         <div className="p-1" style={{ borderBottom: "1px solid rgba(0,0,0,.125)", backgroundColor: "green" }}>
-                            <span style={{ color: "white" }}>{moment(val.created_at).format('D MMM YYYY kk:mm')}</span>
+                            <span style={{ color: "white" }}>{moment(val.created_at).format('D MMM YYYY HH:mm')}</span>
                         </div>
                         <div style={{ borderBottom: "1px solid rgba(0,0,0,.125)" }}>
                             <div className="w-100 d-inline-flex" style={{ height: "80px" }}>
                                 <div className="col-4 transaction-items">
-                                    <span className="px-0">Invoice</span>
+                                    <span className="px-0 font-weight-bold">Invoice</span>
                                     <span className="px-0">{val.transactionId}</span>
                                 </div>
                                 <div className="col-4 my-auto" style={{ borderRight: "1px solid rgba(0,0,0,.125)" }}>
-                                    <span className="px-0">Status</span>
+                                    <span className="px-0 font-weight-bold">Status</span>
                                     <p className="mb-0">{val.status}</p>
                                 </div>
                                 <div className="col-4 my-auto">
-                                    <span className="px-0">Total Belanja</span>
+                                    <span className="px-0 font-weight-bold">Total Belanja</span>
                                     <p className="mb-0">Rp. {renderTotalPrice(val.products)}</p>
                                 </div>
                             </div>

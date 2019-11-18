@@ -44,9 +44,6 @@ const ProductManagement = () => {
         setShowIdx(index)
     }
 
-    console.log(selected)
-
-
     useEffect(() => {
         getProducts()
         setTimeout(() => {
@@ -102,6 +99,18 @@ const ProductManagement = () => {
                 getProducts()
             })
         }
+    }
+
+    const removeHandler = (name, id) => {
+        API.removeProduct({name, id})
+        .then(res => {
+            Swal.fire({
+                type: "success",
+                title: res.data,
+                timer: 3000
+            })
+        })
+        setNewData(!newData)
     }
 
     const fileBtn = useRef('fileBtn')
@@ -222,7 +231,7 @@ const ProductManagement = () => {
                         <td>{product.discAvailable === 'no_disc' ? 'Inactive' : 'Discout ' + product.discAvailable.split('_')[1] + '%'}</td>
                         <td>
                             <button onClick={ () => editHandler(product, index) } className="btn btn-warning mr-2">Edit</button>
-                            <button className="btn btn-danger">Delete</button>
+                            <button onClick={ () => removeHandler(product.name, product.id) } className="btn btn-danger">Delete</button>
                         </td>
                     </>
                     }
@@ -274,7 +283,11 @@ const ProductManagement = () => {
             { addProduct ? <AddProduct setNewData={ setNewData } products={ products }  categories={ categories } setAddProduct={ setAddProduct } /> : null}
             {
                 products ?
-                <AddDiscount discount={products.discount} addDiscount={ addDiscount } setAddDiscount={ setAddDiscount }/>
+                <AddDiscount 
+                discount={products.discount}
+                addDiscount={ addDiscount }
+                setAddDiscount={ setAddDiscount }
+                setNewData={ setNewData }/>
                 :
                 null
             }

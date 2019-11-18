@@ -5,7 +5,7 @@ import Alamat from '../../components/Profile/Alamat'
 import TransactionList from './TransactionList'
 import Biodata from './Biodata'
 
-const Edit = ({ user, dataAddress }) => {
+const Edit = ({ user, dataAddress, setRender, render }) => {
 
     return (
         <div className="card col-12 mb-4 pb-2">
@@ -22,28 +22,13 @@ const Edit = ({ user, dataAddress }) => {
                         <Biodata />
                     </Route>
                     <Route path="/profile/:userId/alamat">
-                        <Alamat id={user.id} dataAddress={dataAddress}/>
+                        <Alamat id={user.id} dataAddress={dataAddress} render={render} setRender={setRender}/>
                     </Route>
                     <Route path="/profile/:userId/transactionlist">
                         <TransactionList id={user.id}/>
                     </Route>
                 </div>
             </div>
-            {/* <div className="row">
-                <div style={{borderRight: "1px solid rgba(0,0,0,.125)"}} className="col-2 px-0">
-                    <ul className="list-group">
-                        <li className="list-item">Biodata Diri</li>
-                        <li className="list-item"><Link to={`/profile/${user.id}/alamat`}>Daftar Alamat</Link></li>
-                        <li className="list-item">Daftar Transaksi</li>
-                        <li className="list-item">Rekening Bank</li>
-                    </ul>
-                </div>
-                <div className="col-10">
-                    <Route path="/profile/:userId/alamat">
-                        <Alamat id={user.id}/>
-                    </Route>
-                </div>
-            </div> */}
         </div>
     )
 }

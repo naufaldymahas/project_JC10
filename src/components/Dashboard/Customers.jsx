@@ -27,7 +27,7 @@ const Customers = () => {
                     <td>{ user.fullName }</td>
                     <td>{ user.email }</td>
                     <td>{ user.totalTransaction }</td>
-                    <td>{ moment(user.lastLogin).format('YYYY-MM-DD kk:mm:ss') }</td>
+                    <td>{ moment(user.lastLogin).format('YYYY-MM-DD HH:mm:ss') }</td>
                 </tr>
             )
         } )

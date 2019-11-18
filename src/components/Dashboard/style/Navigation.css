@@ -1,0 +1,42 @@
+.navigation {
+    width: 9.5%;
+}
+
+.n-links {
+    transition: 0.2s ease;
+    color: grey;
+    text-decoration: none;
+}
+
+.n-links:hover {
+    color: green;
+    text-decoration: none;
+}
+
+.n-left {
+    margin-left: auto;
+}
+
+.n-right {
+    margin-right: auto;
+}
+
+.active {
+    color: green
+}
+
+.nb-links {
+    transition: 0.2s ease;
+    color: grey;
+    text-decoration: none;
+}
+
+.nb-links:hover {
+    color: #00abff;
+    text-decoration: none;
+}
+
+.b-active {
+    color: #00abff
+}
+

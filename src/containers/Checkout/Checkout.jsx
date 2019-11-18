@@ -71,8 +71,8 @@ const Checkout = () => {
     console.log(cart)
 
     const paymentHandler = () => {
-        let dateNow = moment().format('YYYY-MM-DD kk:mm:ss')
-        let deadline = moment().add(8, 'h').format('YYYY-MM-DD kk:mm:ss')
+        let dateNow = moment().format('YYYY-MM-DD HH:mm:ss')
+        let deadline = moment().add(8, 'h').format('YYYY-MM-DD HH:mm:ss')
         let Data = {...data, dateNow, deadline, userName}
         console.log(cart.addedProduct)
         API.checkStockCheckout(cart)

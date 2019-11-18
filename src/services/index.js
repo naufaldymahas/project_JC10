@@ -18,6 +18,9 @@ const getProductDetail = (input) => Get('product/getproductdetail', true, input)
 const getSuggestionProduct = (input) => Get('product/getsuggestion', true, input)
 const getCart = (input) => Get('transaction/getcart', true, input)
 const sendVerifyEmail = (input) => Get('auth/sendyemail', true, input)
+const loginAfterRegister = (input) => Get('auth/loginafterregister', true, input)
+const approvalList = () => Get('dashboard/approvallist', true)
+const getShipping = () => Get('dashboard/getshipping', true)
 
 
 // PATCH
@@ -30,11 +33,13 @@ const checkStockCheckout = (data) => Patch('transaction/checkcheckout', true, da
 const updateIsRemove = (data) => Patch('transaction/updateisremovecart', true, data)
 const checkDeadlineTransaction = (data) => Patch('transaction/checkdeadline', true, data)
 const stockDeadline = (data) => Patch('transaction/stockdeadline', true, data)
-const approvalUpdateStock = (data) => Patch('dashboard/approvalstock', true, data)
 const updateProduct = (data) => Patch('dashboard/updatestock', true, data)
 const editHandler = (data) => Patch('dashboard/edithandler', true, data)
 const updateShipping = (data) => Patch('dashboard/updateshipping', true, data)
 const updateReceived = (data) => Patch('dashboard/updatereceived', true, data)
+const editAddress = (data) => Patch('user/changeaddress', true, data)
+const removeAddress = (data) => Patch('user/removeaddress', true, data)
+const removeProduct = (data) => Patch('dashboard/removeproduct', true, data)
 
 
 // Post
@@ -75,12 +80,17 @@ const API = {
     sendVerifyEmail,
     checkDeadlineTransaction,
     stockDeadline,
-    approvalUpdateStock,
     updateProduct,
     editHandler,
     getTotalPrice,
     updateShipping,
-    updateReceived
+    updateReceived,
+    loginAfterRegister,
+    editAddress,
+    removeAddress,
+    removeProduct,
+    approvalList,
+    getShipping
 }
 
 export default API

@@ -1,5 +1,4 @@
-import Axios from "axios"
-
+import Axios from 'axios'
 import { OfflineRoot, OnlineRoot} from './Config'
 
 const Get = (path, root, params) => {

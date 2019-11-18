@@ -122,7 +122,7 @@ const PaymentConfirmation = props => {
                     <div className="col-12 mb-3">
                         <div className="text-center my-3">
                             <h4>Lakukan Pembayaran Anda sebelum</h4>
-                            <h4>{moment(`${state.data[0].deadline}`).locale('id').format('DD MMMM YYYY kk:mm')}</h4>
+                            <h4>{moment(`${state.data[0].deadline}`).locale('id').format('DD MMMM YYYY HH:mm')}</h4>
                         </div>
                         <div className="col-10 mx-auto">
                             <h5>Detail Transaksi</h5>
