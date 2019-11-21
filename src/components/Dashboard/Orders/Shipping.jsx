@@ -6,29 +6,32 @@ const Shipping = () => {
 
     const [data, setData] = useState()
 
-    const [render, setRender] = useState(false)
 
     useEffect(() => {
+        getData()
+    }, [])
+
+    const getData = () => {
         API.getShipping()
         .then(res => {
             setData(res.data)
         })
-    }, [render])
+    }
 
     const shippingHandler = (transactionId) => {
         API.updateShipping({transactionId})
         .then(res => {
             Swal.fire({type: "success", title: "Success!", timer: 3000})
-            setRender(!render)
+            getData()
         })
     }
 
-    console.log(data)
 
     if(!data) return <h5>Loading</h5>
     if (data.length === 0) return <h5>No Data</h5>
     return (
         <div className="table-responsive mt-3">
+            <h4>Shipping</h4>
             <table className="table text-center">
                 <thead>
                     <tr>

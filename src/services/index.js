@@ -19,6 +19,8 @@ const getSuggestionProduct = (input) => Get('product/getsuggestion', true, input
 const getCart = (input) => Get('transaction/getcart', true, input)
 const sendVerifyEmail = (input) => Get('auth/sendyemail', true, input)
 const loginAfterRegister = (input) => Get('auth/loginafterregister', true, input)
+const getIncomePerMonth = (input) => Get('dashboard/getincomepermonth', true, input)
+const getQtyPerMonth = (input) => Get('dashboard/getqtypermonth', true, input)
 const approvalList = () => Get('dashboard/approvallist', true)
 const getShipping = () => Get('dashboard/getshipping', true)
 
@@ -90,7 +92,9 @@ const API = {
     removeAddress,
     removeProduct,
     approvalList,
-    getShipping
+    getShipping,
+    getIncomePerMonth,
+    getQtyPerMonth
 }
 
 export default API

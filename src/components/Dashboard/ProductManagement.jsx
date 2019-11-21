@@ -178,8 +178,8 @@ const ProductManagement = () => {
                             </select>
                         </td>
                         {/* <input style={{ width: "100px" }} type="text" onChange={e => setSelected({...selected, discount: e.target.value})} value={selected.discount}/> */}
-                        <td>
-                            <button className="btn btn-outline-warning" onClick={ () => buttonEditHandler('cancel') }>cancel</button>
+                        <td style={{ width: "167px" }}>
+                            <button className="btn btn-outline-warning mr-2" onClick={ () => buttonEditHandler('cancel') }>cancel</button>
                             <button className="btn btn-outline-success" onClick={ () => buttonEditHandler('save') }>Save</button>
                         </td>
                         </>

@@ -33,14 +33,28 @@ const Checkout = () => {
         loading: true
     })
 
-    console.log(user)
-
     const [ voucher, setVoucher ] = useState(false)
+
+    const [ total, setTotal ] = useState(0)
+
+    const shippingCost = 10000
+
+    const renderTotal = () => {
+        let total = 0
+        cart.addedProduct.forEach(val => {
+            if (val.productDiscount) total += (val.productPrice - (val.productPrice * val.productDiscount/100)) * val.quantity
+            else total += val.productPrice * val.quantity
+        })
+        return setTotal(total)
+    }
 
     useEffect(() => {
         if (user.id) {
             API.getAddress({id: user.id})
-            .then(res => setState({...state, address: res.data, loading: false}))
+            .then(res => {
+                setState({...state, address: res.data, loading: false})
+                renderTotal()
+            })
         } else setState({...state, loading: false})
     }, [user.id])
 
@@ -68,16 +82,13 @@ const Checkout = () => {
         transactionId: ''
     })
 
-    console.log(cart)
-
     const paymentHandler = () => {
         let dateNow = moment().format('YYYY-MM-DD HH:mm:ss')
         let deadline = moment().add(8, 'h').format('YYYY-MM-DD HH:mm:ss')
-        let Data = {...data, dateNow, deadline, userName}
+        let Data = {...data, dateNow, deadline, userName, total, shippingCost}
         console.log(cart.addedProduct)
         API.checkStockCheckout(cart)
         .then(res => {
-            console.log(res.data)
             if (!res.data) {
                 API.updateIsRemove({cart, userId: user.id})
                 .then(res => {
@@ -167,7 +178,9 @@ const Checkout = () => {
                                         <CheckoutCart
                                         carts={ cart }
                                         voucher={ voucher }
-                                        setVoucher={ setVoucher }/>
+                                        setVoucher={ setVoucher }
+                                        total={ total }
+                                        />
                                         <Payment
                                         data={ data }
                                         setData={ setData }

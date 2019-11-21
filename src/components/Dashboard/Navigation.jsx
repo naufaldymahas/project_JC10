@@ -7,7 +7,7 @@ const Navigation = ({props}) => {
     useEffect(() => {
         let top = document.getElementById(props.location.pathname.split('/')[2])
         let bottom
-        if (props.location.pathname.split('/')[2] === 'orders') {
+        if (props.location.pathname.split('/')[3]) {
             bottom = document.getElementById(props.location.pathname.split('/')[3])
             bottom.classList.add('b-active')
         }
@@ -19,8 +19,6 @@ const Navigation = ({props}) => {
             }
         }
     }, [props.location.pathname])
-
-    console.log(props.location.pathname.split('/')[2])
 
     return (
         <Fragment>
@@ -38,10 +36,9 @@ const Navigation = ({props}) => {
                     <Link className="n-links" id="reports" to="/dashboard/reports"><i className="fa fa-bar-chart"></i> Reports</Link>
                 </li>
             </ul>
-            <ul className="list-unstyled d-flex py-2 my-auto text-center" style={{ borderBottom: "1px solid #dee2e6" }}>
                 {
-                    props.location.pathname.split('/')[2] === 'orders' ? (
-                        <>
+                    props.location.pathname.split('/')[3] ? (
+                    <ul className="list-unstyled d-flex py-2 my-auto text-center" style={{ borderBottom: "1px solid #dee2e6" }}>
                         <li className="col-md-1 ml-auto pr-0">
                             <Link className="nb-links" id="orderlist" to="/dashboard/orders/orderlist/1">
                                 Order List
@@ -57,12 +54,11 @@ const Navigation = ({props}) => {
                                 Shipping Management
                             </Link>
                         </li>
-                        </>
+                    </ul>
                     )
                     :
                     null
                 }
-            </ul>
         </Fragment>
     )
 }

@@ -2,17 +2,7 @@ import React from 'react'
 
 const API = 'http://localhost:9000/'
 
-const CheckoutCart = ({ carts, voucher, setVoucher }) => {
-
-    const renderTotal = () => {
-        let total = 0
-        console.log(carts)
-        carts.addedProduct.forEach(val => {
-            if (val.productDiscount) total += (val.productPrice - (val.productPrice * val.productDiscount/100)) * val.quantity
-            else total += val.productPrice * val.quantity
-        })
-        return total
-    }
+const CheckoutCart = ({ carts, voucher, setVoucher, total }) => {
 
     return (
         <div className="checkout-container">
@@ -67,7 +57,7 @@ const CheckoutCart = ({ carts, voucher, setVoucher }) => {
                        </div>
                        <div className="position-relative" style={{borderTop: "1px solid #d8d8d8"}}>
                             <span className="p-0 text-muted">Total</span>
-                            <span className="p-0 position-absolute" style={{color: "green", right: 0}}>Rp. {(renderTotal() + 10000).toLocaleString('id')}</span>
+                            <span className="p-0 position-absolute" style={{color: "green", right: 0}}>Rp. {(total + 10000).toLocaleString('id')}</span>
                         </div> 
                     </div>
                 </div>

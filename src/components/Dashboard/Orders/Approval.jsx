@@ -7,14 +7,16 @@ const Approval = () => {
 
     const [data, setData] = useState()
 
-    const [render, setRender] = useState(false)
-
     const [idx, setIdx] = useState()
 
     useEffect(() => {
+        getData()
+    }, [])
+
+    const getData = () => {
         API.approvalList()
         .then(res => setData(res.data))
-    }, [render])
+    }
 
     const renderTotalPrice = (orders) => {
         let total = 0
@@ -28,8 +30,7 @@ const Approval = () => {
     const approvalHandler = (cond, transactionId) => {
         API.approvalPayment({cond, transactionId})
         .then(res => {
-            console.log(res)
-            setRender(!render)
+            getData()
             Swal.fire({
                 type: "success",
                 title: res.data,

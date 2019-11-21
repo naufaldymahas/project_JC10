@@ -11,16 +11,46 @@ const OrderList = ({ props }) => {
 
     const [showPage, setShowPage] = useState()
 
+    const [sort, setSort] = useState(false)
+
     let [maxPage, setMaxPage] = useState()
 
     const currentPage = props.location.pathname.split('/')[4]
+
+    const [anu, setAnu] = useState(false)
 
     useEffect(() => {
         API.getAllTransaction()
         .then(res => setOrders(res.data))
     }, [])
 
+    const sortFn = (input) => {
+        setAnu(!anu)
+        console.log(anu)
+        let result
+        if (!input[1] && input[0]) {
+            result = orders.sort((a, b) => {
+                let x = a[input[0]].toUpperCase()
+                let y = b[input[0]].toUpperCase()
+                if (x < y) return -1
+                if (x > y) return 1
+                return 0
+            })
+        } else {
+            // console.log(orders)
+            result = orders.sort((a, b) => {
+                let x = new Date(a[input[0]]).getTime()
+                let y = new Date(b[input[0]]).getTime()
+                return x - y
+            })
+        }
+        setOrders(result)
+        setSort(!sort)
+    }
+
+
     useEffect(() => {
+        console.log(orders)
         if (!orders) return
         setMaxPage(Math.ceil(orders.length/10))
         if (currentPage < 1) props.history.push('/dashboard/orders/orderlist/' + 1)
@@ -28,7 +58,7 @@ const OrderList = ({ props }) => {
             if (currentPage > maxPage) props.history.push('/dashboard/orders/orderlist/' + maxPage)
         }
         sPage()
-    }, [currentPage, orders, maxPage])
+    }, [currentPage, orders, maxPage, sort])
 
     const sPage = () => {
         let arr = []
@@ -123,6 +153,13 @@ const OrderList = ({ props }) => {
         <Fragment>
         <div className="mt-3 table-responsive">
         <h4>Order List</h4>
+        {/* <select onChange={ e => sortFn(e.target.value.split('|')) }>
+            <option value="">Sort by: </option>
+            <option value="userName">Name</option>
+            <option value="status">Status</option>
+            <option value="created_at|true">Created At</option>
+        </select>
+        <button onClick={ () => sortFn('userName'.split('|')) }>Sort Status</button> */}
             <table className="table text-center">
                 <thead>
                     <tr>
